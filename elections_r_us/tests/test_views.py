@@ -17,6 +17,18 @@ BAD_USERNAMES = [
     "robert'); DROP TABLE Students; --"
 ]
 
+BAD_PASSWORDS = [
+    '',
+    'fjvi',
+    'V%@35',
+]
+
+UNMATCHED_PASSWORDS = [
+    ('654616565', '654982330'),
+    ('986asdga', '56464asgassg'),
+    ('asgasdh0', 'ahdfharth')
+]
+
 
 @pytest.mark.parametrize('username, password', VALID_LOGINS)
 def test_valid_registration(username, password):
@@ -30,3 +42,19 @@ def test_bad_username(username):
     password = 'hello'
     with pytest.raises(BadUsername):
         verify_registration(username, password, password)
+
+
+@pytest.mark.parametrize('password', BAD_PASSWORDS)
+def test_bad_password(password):
+    from ..views.default import verify_registration, BadPassword
+    username = 'username'
+    with pytest.raises(BadPassword):
+        verify_registration(username, password, password)
+
+
+@pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
+def test_unmatched_password(p1, p2):
+    from ..views.default import verify_registration, UnmatchedPassword
+    username = 'username'
+    with pytest.raises(UnmatchedPassword):
+        verify_registration(username, p1, p2)
