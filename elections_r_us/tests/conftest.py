@@ -1,8 +1,10 @@
+"""Configuration for pytest."""
+
 import os
 import pytest
 import transaction
 from pyramid import testing
-# from elections_r_us.security import pwd_context
+from elections_r_us.security import pwd_context
 
 from ..models import (
     get_engine,
@@ -15,6 +17,7 @@ from ..models.meta import Base
 
 @pytest.fixture(scope="session")
 def sqlengine(request):
+    """Creates a SQL engine specifically for testing (which is destroyed afterwards)."""
     config = testing.setUp(settings={
         'sqlalchemy.url': os.environ["DATABASE_URL"]
     })
@@ -42,3 +45,15 @@ def new_session(sqlengine, request):
 
     request.addfinalizer(teardown)
     return session
+
+
+@pytest.fixture
+def session_with_user(new_session):
+    username = 'username'
+    password = 'password'
+    new_session.add(User(
+        username=username,
+        password=pwd_context.encrypt(password)
+    ))
+    new_session.flush()
+    return new_session, username, password
