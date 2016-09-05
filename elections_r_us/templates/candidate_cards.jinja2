@@ -1,0 +1,33 @@
+{% extends "index.jinja2" %}
+{% block body %}
+  {% if entries %}
+    {% for entry in entries %}
+
+    <div class="col-md-5">
+        <!--Stylish Card Light-->
+        <div class="card stylish-card hoverable">
+           
+            <div class="view overlay hm-white-slight z-depth-1">
+                <img src="http://mdbootstrap.com/images/regular/nature/img%20(54).jpg" class="img-responsive" alt="">
+                <div class="mask waves-effect activator"></div>
+            </div>
+
+            <!--Content-->
+            <div class="card-content">
+                <a href=""><span class="card-title grey-text text-darken-4"><i class="fa fa-share-alt reveal-button"> </i></span></a>
+                <h4>Card title</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat tenetur odio suscipit non commodi vel eius veniam maxime. </p>
+                <div class="card-footer text-right">
+                    <a class="black-text waves-effect activator"><h5>Read more <i class="fa fa-chevron-right"></i></h5></a>
+                </div>
+            </div>
+
+        </div>
+        <!--/.Stylish Card Light-->
+    </div>
+
+    {% endfor %}
+  {% else %}
+    <p>No Information for the Election.</p>
+  {% endif %}
+{% endblock %}

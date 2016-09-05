@@ -25,6 +25,7 @@
   <nav class="navbar navbar-dark secondary-color-dark">
               <!-- Collapse button-->
   <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapseEx"><i class="fa fa-bars"></i></button>
+  
   <div class="container">
       <!--Collapse content-->
       <div class="collapse navbar-toggleable-xs" id="collapseEx">
@@ -51,12 +52,13 @@
           <!--/Navbar icons-->
       </div>
       <!--/.Collapse content-->
-    </div>
+  </div>
   </nav>
-  {% block body %}
-  {% end block %}
-  <!--Footer-->
-  <footer class="page-footer blue center-on-small-only">
+  
+{% block body %}
+{% endblock body %}
+
+<footer class="page-footer blue center-on-small-only">
       <!--Footer Links-->
       <div class="container-fluid">
           <div class="row">
@@ -87,6 +89,7 @@
       <!--/.Copyright-->
   </footer>
   <!--/.Footer-->
+  
     <!-- SCRIPTS -->
 
     <!-- JQuery -->
