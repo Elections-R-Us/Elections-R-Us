@@ -1,4 +1,4 @@
-from models import User
+from .models import User
 from passlib.apps import custom_app_context as pwd_context
 
 def create_user(session, username, password):
@@ -16,8 +16,8 @@ def check_login(session, username, password):
     """Return whether username and password match in the database.
 
     If username is not present, returns False."""
+    query = session.query(User).filter(User.username == username).first()
     try:
-        query = session.query(User).filter(User.username == username).first()
         return pwd_context.verify(password, query.password)
     except AttributeError:
         return False
