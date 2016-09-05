@@ -3,8 +3,8 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-with open(os.path.join(here, 'README.md')) as f:
-    README = f.read()
+# with open(os.path.join(here, 'README.md')) as f:
+#     README = f.read()
 with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
@@ -19,18 +19,21 @@ requires = [
     'waitress',
 
     'psycopg2',
+    'passlib',
     ]
 
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',  # includes virtualenv
     'pytest-cov',
+    'pytest-watch',
+    'tox',
     ]
 
 setup(name='Elections-R-Us',
       version='0.0',
       description='Elections-R-Us',
-      long_description=README + '\n\n' + CHANGES,
+      # long_description=README + '\n\n' + CHANGES,
       classifiers=[
           "Programming Language :: Python",
           "Framework :: Pyramid",
