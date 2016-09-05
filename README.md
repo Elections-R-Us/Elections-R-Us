@@ -16,9 +16,11 @@ from a wide variety of publicly available sources.
 
 ## Setup
 1. Clone this repo
-2. Install (into a virtual environment!): `pip install -e .[testing]`
+2. Create a new virtual environment
 3. Run `createdb elections_r_us`
 4. Edit your new environment's activate script, adding this line:
 `export DATABASE_URL=postgres:///elections_r_us`
-5. Run `init_db development.ini`
-6. Run `pserve development.ini`
+5. Activate and install:
+```pip install -U pip setuptools -e .[testing]```
+6. Run `init_db development.ini`
+7. Run `pserve development.ini`
