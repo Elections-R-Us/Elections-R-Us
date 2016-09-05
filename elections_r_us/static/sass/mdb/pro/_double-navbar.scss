@@ -1,0 +1,84 @@
+/*********************
+  Double Navbar
+**********************/
+
+
+/*********************
+  Double Navbar
+**********************/
+
+.double-navbar {
+    z-index: 998;
+    background-color: transparent;
+    .button-collapse {
+        position: absolute;
+        padding-top: 0.8em;
+        padding-left: 1em;
+        font-size: 1.3em;
+        color: #fff;
+    }
+    ul {
+        padding: 10px 20px;
+        margin: 0;
+    }
+    ul > li > a {
+        color: #fff;
+        font-size: 13px;
+        padding-left: 5px;
+        padding-right: 5px;
+        span {
+            font-size: 1.2em;
+        }
+    }
+    .material-icons {
+        font-size: 3em;
+    }
+    .fa {
+        font-size: 2em;
+    }
+    .dropdown-content {
+        padding: 0;
+        a {
+            padding: 20px;
+            font-weight: 400;
+            color: #000;
+        }
+    }
+    /* Breadcrumbs */
+    .breadcrumbs {
+        color: #fff;
+        padding: 18px;
+        a {
+            color: #fff;
+        }
+    }
+}
+
+
+/* Extra Small Devices, Phones */
+
+@media only screen and (max-width: 760px) {
+    .double-navbar {
+        ul {
+        padding-right: 0;
+        
+    }
+         ul > li > a {
+        font-size: 8px;
+             padding-left: 3px;
+        padding-right: 3px;
+        
+    }
+        .button-collapse {
+        
+        padding-top: 0.9em;
+       
+        font-size: 1em;
+        
+    }
+    }
+}
+
+.navbar-fixed-bottom, .navbar-fixed-top {
+    z-index: 996;
+}
