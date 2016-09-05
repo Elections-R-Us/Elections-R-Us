@@ -17,3 +17,9 @@ def test_user_can_login(session_with_user):
 def test_nonexistent_user_login_fails(new_session):
     from ..security import check_login
     assert not check_login(new_session, 'hello', 'world')
+
+
+def test_bad_password_login_fails(session_with_user):
+    from ..security import check_login
+    session, username, password = session_with_user
+    assert not check_login(session, username, password + 'not!')
