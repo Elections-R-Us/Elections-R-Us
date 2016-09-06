@@ -36,6 +36,7 @@ BAD_PASSWORDS = [
 UNMATCHED_PASSWORDS = [
     ('654616565', '654982330'),
     ('986asdga', '56464asgassg'),
+    ('a'*10, 'A'*10),
     ('asgasdh0', 'ahdfharth')
 ]
 
@@ -231,3 +232,20 @@ def test_password_verify_unmatched(p1, p2):
     from ..views.default import verify_password, UnmatchedPassword
     with pytest.raises(UnmatchedPassword):
         verify_password(p1, p2)
+
+
+ADDRESSES = [
+    '901 12th Avenue Seattle WA',
+    '7600 212th St SW, Edmonds, WA 98026'
+]
+
+
+BAD_ADDRESSES = [  # addresses for which the Google API has no info
+    '1330 NE Ford St McMinnville OR'
+]
+
+
+@pytest.mark.parametrize('address', ADDRESSES)
+def test_consume_api_success(address):
+    from ..views.default import get_civic_info
+    assert get_civic_info(address)

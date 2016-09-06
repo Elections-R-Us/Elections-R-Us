@@ -1,9 +1,17 @@
+import os
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.security import remember, forget
 
+from googleapiclient.errors import HttpError
+import googleapiclient.discovery as discovery
+
 from ..models import User
 from ..security import check_login, create_user, change_password
+
+
+ELECTION_ID = 5000
 
 
 class BadUsername(Exception):
@@ -101,3 +109,20 @@ def password_reset_view(request):
             return {'unmatched_password': True}
         return {'password_reset': True}
     return {}
+
+
+
+def get_civic_info(address):
+    civicinfo_service = discovery.build(
+        'civicinfo',
+        'v2',
+        developerKey=os.environ.get('APIKEY')
+    )
+    info_query = civicinfo_service.elections().voterInfoQuery(
+        address=address,
+        electionId=ELECTION_ID
+    )
+    try:
+        return info_query.execute()
+    except HttpError:
+        return None

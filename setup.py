@@ -18,6 +18,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
 
+    'google-api-python-client',
     'psycopg2',
     'passlib',
     ]
