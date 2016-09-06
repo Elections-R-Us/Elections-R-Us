@@ -53,6 +53,12 @@ def login_view(request):
     return {}
 
 
+@view_config(route_name='logout', permission='login')
+def logout_view(request):
+    """Log user out."""
+    return HTTPFound(location='/', headers=forget(request))
+
+
 @view_config(route_name='register', renderer="templates/register.jinja2")
 def register_view(request):
     if request.method == 'POST':
