@@ -1,7 +1,9 @@
-from ..models import User
 from pyramid.httpexceptions import HTTPFound
-from ..security import check_login, create_user
 from pyramid.view import view_config
+from pyramid.security import remember, forget
+
+from ..models import User
+from ..security import check_login, create_user
 
 
 class BadUsername(Exception):
@@ -45,7 +47,7 @@ def login_view(request):
         username = request.POST['username']
         password = request.POST['password']
         if check_login(request.dbsession, username, password):
-            return HTTPFound('/')
+            return HTTPFound('/', headers=remember(request, username))
         else:
             return {'login_failure': True}
     return {}
