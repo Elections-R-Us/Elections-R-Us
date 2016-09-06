@@ -27,3 +27,19 @@ def test_bad_password_login_fails(session_with_user):
     from ..security import check_login
     session, username, password = session_with_user
     assert not check_login(session, username, password + 'not!')
+
+
+def test_change_password(session_with_user):
+    from ..security import check_login, change_password
+    session, username, password = session_with_user
+    new_password = password + '!'
+    change_password(session, username, new_password)
+    assert check_login(session, username, new_password)
+
+
+def test_change_password_new_overwrites(session_with_user):
+    from ..security import check_login, change_password
+    session, username, password = session_with_user
+    new_password = password + '!'
+    change_password(session, username, new_password)
+    assert not check_login(session, username, password)
