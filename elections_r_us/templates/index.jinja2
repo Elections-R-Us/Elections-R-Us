@@ -29,13 +29,49 @@
             <li><a href="#" class="waves-effect waves-light">About Us</a></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" role="button" aria-expanded="false">Login / Sign-Up<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Register</a></li>
+                <li><a data-toggle="modal" data-target="#modalLogin">Login</a></li>
                 <li class="divider"></li>
                 <li><a href="#">User Profile</a></li>
               </ul>
             </li>
           </ul>
+          <div class="modal fade" id="modalLogin" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <h4><i class="fa fa-user"></i> Login</h4>
+                  </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                      <div class="row">
+                        <form class="col-md-12">
+                          <div class="row">
+                            <div class="input-field">
+                              <i class="material-icons prefix">email</i>
+                              <input id="icon_email" type="tel" class="validate">
+                              <label for="icon_email">Your email</label>
+                            </div>
+                            <div class="input-field">
+                              <i class="material-icons prefix">lock</i>
+                              <input id="password" type="password" class="validate">
+                              <label for="password">Password</label>
+                            </div>
+                            <div class="text-center">
+                              <button type="button" class="btn btn-primary waves-effect waves-light">Login</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal">X</button>
+                      <div class="options">
+                        <p>Not a member? <a href="#">Sign Up</a></p>
+                        <p>Forgot <a href="#">Password?</a></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
       </div>
     </nav>
