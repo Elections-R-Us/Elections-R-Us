@@ -1,51 +1,29 @@
 {% extends 'index.jinja2' %}
 {% block body %}
 
-<form>
-
-    <!--Second row-->
-    <div class="row">
-        <!--First column-->
-        <div class="col-md-12">
-
-            <div class="md-form">
-                <textarea type="text" id="form76" class="md-textarea"></textarea>
-                <label for="form76">Street Address</label>
-            </div>
-
+<div class="row">
+  <form class="col-md-12">
+      <div class="row">
+        <div class="input-field col-md-12">
+          <input  name="street_address" id="address" type="text" class="validate">
+          <label for="address">Street Address</label>
         </div>
-    </div>
-    <!--/.Second row-->
-
-    <!--Third row-->
-    <div class="row">
-
-        <!--First column-->
-        <div class="col-md-4">
-            <div class="md-form">
-                <input type="text" id="form41" class="form-control">
-                <label for="form41" class="">City</label>
-            </div>
+      </div>
+      <div class="row">
+        <div class="input-field col-md-4">
+          <input name="city" id="city" type="text" class="validate">
+          <label for="password">City</label>
         </div>
-
-        <!--Second column-->
-        <div class="col-md-4">
-            <div class="md-form">
-                <input type="text" id="form51" class="form-control">
-                <label for="form51" class="">State</label>
-            </div>
+        <div class="input-field col-md-4">
+          <input name="state" id="state" type="text" class="validate">
+          <label for="email">State</label>
         </div>
-
-        <!--Third column-->
-        <div class="col-md-4">
-            <div class="md-form">
-                <input type="text" id="form61" class="form-control">
-                <label for="form61" class="">Zip Code</label>
-            </div>
+        <div class="input-field col-md-4">
+          <input name="zip_code" id="zip_code" type="text" class="validate">
+          <label for="email">Zip Code</label>
         </div>
-
-    </div>
-    <!--/.Third row-->
-</form>
+      </div>
+  </form>
+</div>
 
 {% endblock %}
