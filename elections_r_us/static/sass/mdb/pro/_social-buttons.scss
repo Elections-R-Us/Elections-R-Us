@@ -1,0 +1,266 @@
+/*********************
+  Social Buttons
+**********************/
+
+.btn-sm {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    padding: 8px;
+    cursor: pointer;
+    outline: none !important;
+    @extend .z-depth-1;
+    @include transition(.2s ease-out);
+    &:hover {
+        @extend .z-depth-2;
+        color: #fff
+    }
+    &:focus {
+        color: #fff;
+    }
+    .fa {
+        font-size: 22px;
+        width: 16px;
+        @include transition-duration(0.4s);
+    }
+    &:hover .fa {
+        @include transform(scale(1.1));
+    }
+    span {
+        margin-left: 8px;
+    }
+}
+ 
+.btn-sm-full {
+    color: #fff;
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    padding: 8px;
+    cursor: pointer;
+    outline: none !important;
+    @extend .z-depth-1;
+    @include transition(.2s ease-out);
+    &:hover {
+        @extend .z-depth-2;
+        color: #fff
+    }
+    &:focus {
+        color: #fff;
+    }
+    .fa {
+        font-size: 22px;
+        width: 16px;
+    }
+    span {
+        margin-left: 8px;
+    }
+}
+
+.rectangle {
+    color: #fff;
+    padding: 10px 32px 10px 32px;
+    @include border-radius(2px);
+}
+
+.square {
+     color: #fff;
+    padding: 20px;
+    @include border-radius(2px);
+}
+
+
+/* SOCIAL ICONS */
+
+.icons-sm {
+    cursor: pointer;
+    position: relative;
+    padding: 8px 30px;
+    border: none;
+    margin: 10px 1px;
+    text-decoration: none;
+    outline: none !important;
+    font-size: 30px;
+    .fa {
+        @include transition-duration(0.2s);
+    }
+    &:hover .fa {
+        @include transform(scale(1.2));
+    }
+}
+
+
+/* Social list */
+
+.social-list {
+    width: 245px;
+    padding: 20px;
+    margin: 20px 5px;
+    li {
+        margin-top: 15px;
+    }
+    .fa {
+        margin-right: 20px;
+        font-size: 15px;
+    }
+    .fa-facebook {
+        margin-right: 26px;
+    }
+    a {
+        font-size: 23px;
+    }
+}
+
+/* Social counters */
+.social-counter {
+    position: absolute;
+    z-index: 8;
+    margin-left: -25px; 
+    margin-top: 5px;
+    font-size: 15px;
+    background-color: red; 
+}
+
+
+
+/* SOCIAL COLORS */
+
+/* Buttons */
+
+.fb-bg {
+    background-color: $fb-color;
+    &:hover {
+        background-color: lighten($fb-color, 5%);
+    }
+}
+
+.gplus-bg {
+    background-color: $gplus-color;
+    .fa {
+        margin-right: 8px;
+    }
+    &:hover {
+        background-color: lighten($gplus-color, 5%);
+    }
+}
+
+.tw-bg {
+    background-color: $tw-color;
+    &:hover {
+        background-color: lighten($tw-color, 5%);
+    }
+}
+
+.li-bg {
+    background-color: $li-color;
+    &:hover {
+        background-color: lighten($li-color, 5%);
+    }
+}
+
+.yt-bg {
+    background-color: $yt-color;
+    &:hover {
+        background-color: lighten($yt-color, 5%);
+    }
+}
+
+.ins-bg {
+    background-color: $ins-color;
+    &:hover {
+        background-color: lighten($ins-color, 5%);
+    }
+}
+
+.pin-bg {
+    background-color: $pin-color;
+    &:hover {
+        background-color: lighten($pin-color, 5%);
+    }
+}
+
+.git-bg {
+    background-color: $git-color;
+    &:hover {
+        background-color: lighten($git-color, 5%);
+    }
+}
+
+.comm-bg {
+    background-color: $comm-color;
+    &:hover {
+        background-color: lighten($comm-color, 5%);
+    }
+}
+
+.email-bg {
+    background-color: $stylish-color;
+    &:hover {
+        background-color: lighten($stylish-color, 5%);
+    }
+}
+
+/* Icons */
+
+.fb-ic {
+    color: $fb-color;
+    &:hover {
+        color: $fb-color;
+    }
+}
+
+.gplus-ic {
+    color: $gplus-color;
+    &:hover {
+        color: $gplus-color;
+    }
+}
+
+.tw-ic {
+    color: $tw-color;
+    &:hover {
+        color: $tw-color;
+    }
+}
+
+.li-ic {
+    color: $li-color;
+    &:hover {
+        color: $li-color;
+    }
+}
+
+.yt-ic {
+    color: $yt-color;
+    &:hover {
+        color: $yt-color;
+    }
+}
+
+.ins-ic {
+    color: $ins-color;
+    &:hover {
+        color: $ins-color;
+    }
+}
+ 
+.pin-ic {
+    color: $pin-color;
+    &:hover {
+        color: $pin-color;
+    }
+}
+
+.git-ic {
+    color: $git-color;
+    &:hover {
+        color: $git-color;
+    }
+}
+ 
+.email-ic {
+    color: $stylish-color;
+    &:hover {
+        color: $stylish-color;
+    }
+}

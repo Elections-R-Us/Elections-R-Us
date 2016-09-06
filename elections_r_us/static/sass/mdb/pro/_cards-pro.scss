@@ -1,0 +1,353 @@
+/*********************
+  CARDS PREMIUM
+**********************/
+
+
+/* Rotating Cards */
+
+.card-wrapper {
+    margin: $element-top-margin 0 $element-bottom-margin 0; 
+    height: 600px; 
+    max-height: 500px;
+    position: relative;
+    perspective: 800px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    .face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        -o-border-radius: 2px;
+        border-radius: 2px;
+        background-color: #fff;
+    }
+    /* Front side */
+    .card-up {
+        overflow: hidden;
+        height: 50%;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        -o-border-radius: 2px;
+        border-radius: 2px;
+    }
+    .card-up img {
+        min-width: 400px;
+    }
+    .avatar {
+        border-radius: 50%;
+        display: block;
+        height: 120px;
+        margin: -65px auto 0;
+        overflow: hidden;
+        width: 120px;
+    }
+    .avatar img {
+        border: 5px solid #fff;
+        background: none repeat scroll 0 0 #FFFFFF;
+        width: 100%;
+    }
+    /* Back side */
+    .card-content {
+        padding: 15px;
+        line-height: 1.42857143;
+        font-size: 14px;
+    }
+    /* Social icons */
+    .sm-container {
+        margin-top: 80px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+        .fa {
+            font-size: 0.7em;
+        }
+    }
+    .card-sm a {
+        padding: 0;
+        margin: 7px;
+    }
+    /* Card with rotate on click */
+    .card-rotating {
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        -o-border-radius: 2px;
+        border-radius: 2px;
+    }
+    .card-rotating .sm-container {
+        margin-top: 30px;
+    }
+    /* Rotate icons */
+    .fa-repeat,
+    .fa-undo {
+        font-size: 20px;
+        margin-top: 30px;
+    }
+    .fa-undo {
+        margin-top: 30px;
+    }
+    /* Animation */
+    .card-rotating {
+        transform-style: preserve-3d;
+    }
+    .card-rotating__front,
+    .card-rotating__back {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transition: -webkit-transform 1.0s;
+        transition: transform 1.0s;
+    }
+    .card-rotating__back {
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+    }
+    /* Click effect */
+    .card-rotating.effect__click.flipped .card-rotating__front {
+        -webkit-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    }
+    .card-rotating.effect__click.flipped .card-rotating__back {
+        -webkit-transform: rotateY(0);
+        transform: rotateY(0);
+    }
+}
+
+
+/* Cards reveal */
+
+.card {
+    .reveal-button {
+        float: right;
+    }
+    .card-reveal {
+        padding: $card-padding;
+        position: absolute;
+        background-color: $card-bg-color;
+        width: 100%;
+        overflow-y: auto;
+        top: 100%;
+        height: 100%;
+        z-index: 1;
+        display: none;
+        
+        .card-title {
+            cursor: pointer;
+            display: block;
+            
+        }
+        &.social-reveal {
+            height: 60%;
+        }
+        
+    }
+    
+}
+
+
+/* Elegant cards */
+
+.elegant-card {
+    margin: $element-top-margin 0 $element-bottom-margin 0;
+    position: relative;
+    perspective: 800px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    .card-up {
+        overflow: hidden;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        -o-border-radius: 2px;
+        border-radius: 2px;
+    }
+    .btn-floating {
+        margin: -2.1em 2em;
+        float: right;
+        .fa {
+            font-size: 14px;
+        }
+    }
+    .card-content {
+        padding: 2em;
+        color: #666666;
+        background-color: #fff;
+        h5 {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        p {
+            font-size: 15px;
+            line-height: 1.571428;
+            font-weight: 300;
+        }
+    }
+    .card-footer {
+        background-color: $stylish-color-dark;
+        height: 50px;
+        color: #fff;
+        text-align: center;
+        font-size: 15px;
+        ul {
+            padding-top: 15px;
+            padding-bottom: 15px;
+            .fa {
+                margin-right: 5px;
+            }
+            a {
+                color: #fff;
+            }
+        }
+    }
+    .card-label {
+        margin-bottom: -27px;
+        margin-top: 0;
+        z-index: 10;
+        position: relative;
+        .label {
+            border-radius: 0;
+            font-weight: 300;
+        }
+    }
+    .card-details {
+        color: #666;
+        a {
+            color: #666;
+        }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .elegant-card {
+        .card-up {
+            max-height: 150px;
+        }
+        .card-content {
+            padding: 1em;
+        }
+    }
+}
+
+
+/* Testimonial cards */
+
+.testimonial-card {
+   margin: $element-top-margin 0 $element-bottom-margin 0;
+    position: relative;
+    background-color: #fff;
+    .card-up {
+        overflow: hidden;
+        height: 120px;
+    }
+    .avatar {
+        border-radius: 50%;
+        display: block;
+        height: 120px;
+        margin: -65px auto 0;
+        overflow: hidden;
+        width: 120px;
+    }
+    .avatar img {
+        border: 5px solid #fff;
+        background: none repeat scroll 0 0 #FFFFFF;
+        width: 100%;
+    }
+    .card-content {
+        padding: 1em;
+        color: #666666;
+        background-color: #fff;
+        text-align: center;
+        h5 {
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        p {
+            font-size: 15px;
+            line-height: 1.571428;
+            font-weight: 300;
+        }
+    }
+    
+}
+
+
+/* Review card */
+
+.review-card {
+    position: relative;
+    margin: $element-top-margin 0 $element-bottom-margin 0;
+    .card-footer {
+        background-color: #000;
+        position: relative;
+        width: 100%;
+        color: #fff;
+        height: 140px;
+        padding: 14px;
+        .btn-floating {
+            margin: -2.9em 10px;;
+            float: right;
+        }
+        h5 {
+            padding-left: 10px;
+        }
+        .item-details {
+            padding-left: 10px;
+            padding-top: 8px;
+            a {
+                color: #fff;
+            }
+        }
+        .material-icons {
+            color: #fff;
+        }
+        .rating {
+            margin-top: -33px;
+            &:hover {
+                .material-icons {
+                    color: gold;
+                    transition: all 0.4s linear;
+                }
+            }
+        }
+    }
+    .card-label {
+        margin-bottom: -27px;
+        margin-top: 0;
+        z-index: 10;
+        position: relative;
+        .label {
+            border-radius: 0;
+            font-weight: 300;
+        }
+    }
+}
+
+/* Stylish card */
+.stylish-card {
+    margin: $element-top-margin 0 $element-bottom-margin 0;
+    .card-content {
+        padding: 1.5rem;
+        h4 {
+            text-align: left;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #666;
+        }
+        h5 {
+            text-align: right;
+            margin-top: 1em;
+            border: none;
+        }
+        .fa-chevron-right {
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+    }
+}
+

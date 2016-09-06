@@ -1,0 +1,29 @@
+{% extends 'index.jinja2' %}
+{% block body %}
+
+<div class="row">
+  <form class="col-md-12">
+      <div class="row">
+        <div class="input-field col-md-12">
+          <input  name="street_address" id="address" type="text" class="validate">
+          <label for="address">Street Address</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col-md-4">
+          <input name="city" id="city" type="text" class="validate">
+          <label for="password">City</label>
+        </div>
+        <div class="input-field col-md-4">
+          <input name="state" id="state" type="text" class="validate">
+          <label for="email">State</label>
+        </div>
+        <div class="input-field col-md-4">
+          <input name="zip_code" id="zip_code" type="text" class="validate">
+          <label for="email">Zip Code</label>
+        </div>
+      </div>
+  </form>
+</div>
+
+{% endblock %}

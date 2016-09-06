@@ -1,0 +1,136 @@
+/*********************
+Carousel Pro
+**********************/
+
+//Multiitem
+.multiitem-car {
+    margin-bottom: 5em;
+    .carousel-indicators li {
+        height: 20px;
+        width: 20px;
+        background-color: #000;
+        margin-bottom: -30px;
+    }
+    .carousel-indicators .active {
+        height: 25px;
+        width: 25px;
+        background-color: #000;
+    }
+    .carousel-control.left {
+        background: transparent;
+    }
+    .carousel-control.right {
+        background: transparent;
+    }
+    .carousel-indicators {
+        margin-bottom: -2em;
+    }
+    .card {
+        margin: 1px;
+    }
+    .card-content {
+        padding: 20px;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .multiitem-car {
+        .carousel-control {
+            margin: -25px;
+        }
+    }
+}
+
+//Carousel with thumbnails
+.carousel-thumbnails {
+    margin-bottom: 7rem;
+    .carousel-indicators {
+        margin-bottom: -10%;
+        position: absolute;
+        li {
+            height: auto;
+            width: auto;
+            border: none;
+        }
+        .active {
+            height: auto;
+            width: auto;
+            background-color: #fff;
+            opacity: 0.5;
+        }
+        img {
+            max-width: 150px;
+            max-height: 100px;
+            overflow: hidden;
+        }
+    }
+}
+
+@media only screen and (max-width: 1450px) {
+    .carousel-thumbnails .carousel-indicators {
+        margin-bottom: -12%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .carousel-thumbnails {
+        margin-bottom: 4rem;
+        .carousel-indicators {
+            margin-bottom: -98px;
+            li {
+                max-width: 100px;
+            }
+            .active {
+                max-width: 100px;
+            }
+            img {
+                max-width: 100px;
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .carousel-thumbnails {
+        margin-bottom: 1rem;
+        .carousel-indicators {
+            margin-bottom: -48px;
+            li {
+                max-width: 50px;
+            }
+            .active {
+                max-width: 50px;
+            }
+            img { 
+                max-width: 50px;
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+// Carousel Gallery
+.carousel-gallery {
+    .col-xs-8 {
+        padding-right: 0;
+    }
+    .col-xs-4 {
+        padding-left: 0;
+        padding-rigth: 0;
+    }
+    .carousel-indicators {
+        position: relative;
+        margin-top: 20px;
+        li {
+            width: 100%;
+        }
+        .active {
+            width: 100%;
+        }
+        img {
+            width: auto;
+            overflow: hidden;
+        }
+    }
+}
