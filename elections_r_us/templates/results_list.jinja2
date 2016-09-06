@@ -1,12 +1,19 @@
 {% extends "index.jinja2" %}
 {% block body %}
-
-<div class="collection z-depth-2">
-  <a class="collection-item blue"><h4 class="white-text">Federal</h4></a>
-  <a href="#!" class="collection-item">Hills</a>
-  <a href="#!" class="collection-item">Drumpf</a>
-  <a href="#!" class="collection-item">Gary Libz</a>
-  <a href="#!" class="collection-item">Dr. Crackpot</a>
-</div>
-
+{% if response %}
+  {% for item in response %}
+  {% if item.contests.type is 'general election' %}
+    <div class="collection z-depth-2">
+      <a class="collection-item indigo"><h4 class="white-text">{{ item.contests.office }}</h4></a>
+      <a href="#!" class="collection-item">{{ item.contests.candidate.name}}</a>
+    </div>
+  {% endif %}
+  {% if item.contests.type is 'referendum' %}
+    <div class="collection z-depth-2">
+      <a class="collection-item indigo"><h4 class="white-text">{{ item.contests.referendumTitle }}</h4></a>
+      <a href="#!" class="collection-item">{{ item.contests.referendumText }}</a>
+    </div>
+  {% endif %}
+  {% endfor %}
+{% endif %}
 {% endblock %}
