@@ -82,9 +82,14 @@ def register_view(request):
     return {}
 
 
+@view_config(
+    route_name='change_password',
+    renderer='templates/change_password.jinja2',
+    permission='login'
+)
 def password_reset_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
+        username = request.authenticated_userid
         password = request.POST['password']
         password_confirm = request.POST['password_confirm']
         change_password(request.dbsession, username, password)
@@ -95,4 +100,4 @@ def password_reset_view(request):
         except UnmatchedPassword:
             return {'unmatched_password': True}
         return {'password_reset': True}
-
+    return {}
