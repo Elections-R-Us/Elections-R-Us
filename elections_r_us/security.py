@@ -49,6 +49,6 @@ def includeme(config):
         hashalg='sha512'
     )
     config.set_authentication_policy(authn_policy)
-    config.set_authorization_policy(ACLAuthorizationPolicy)
+    config.set_authorization_policy(ACLAuthorizationPolicy())
     config.set_default_permission('view')
     config.set_root_factory(Root)

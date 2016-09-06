@@ -110,6 +110,20 @@ def test_register_view_success(new_session, username, password):
     assert isinstance(register_results, HTTPFound)
 
 
+# add test checking that POSTing to register view changes the db!
+@pytest.mark.parametrize('username, password', VALID_LOGINS)
+def test_register_view_success_creates_user(new_session, username, password):
+    from ..views.default import register_view
+    from ..models import User
+    register_view(dummy_post_request(new_session, {
+        'username': username,
+        'password': password,
+        'password_confirm': password
+    }))
+    assert new_session.query(User).first().username == username
+
+
+
 @pytest.mark.parametrize('username', BAD_USERNAMES)
 def test_register_view_bad_username(new_session, username):
     from ..views.default import register_view

@@ -1,6 +1,7 @@
 from ..models import User
 from pyramid.httpexceptions import HTTPFound
-from ..security import check_login
+from ..security import check_login, create_user
+from pyramid.view import view_config
 
 
 class BadUsername(Exception):
@@ -33,26 +34,37 @@ def user_exists(session, username):
     return len(query) > 0
 
 
+@view_config(route_name='home', renderer='templates/home.jinja2')
+def home_view(request):
+    return {}
+
+
+@view_config(route_name='login', renderer="templates/login.jinja2")
 def login_view(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    if check_login(request.dbsession, username, password):
-        return HTTPFound('/')
-    else:
-        return {'login_failure': True}
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        if check_login(request.dbsession, username, password):
+            return HTTPFound('/')
+        else:
+            return {'login_failure': True}
+    return {}
 
 
+@view_config(route_name='register', renderer="templates/register.jinja2")
 def register_view(request):
-    try:
-        verify_registration(
-            request.POST['username'],
-            request.POST['password'],
-            request.POST['password_confirm']
-        )
-    except BadUsername:
-        return {'bad_username': True}
-    except BadPassword:
-        return {'bad_password': True}
-    except UnmatchedPassword:
-        return {'unmatched_password': True}
-    return HTTPFound('/')
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        password_confirm = request.POST['password_confirm']
+        try:
+            verify_registration(username, password, password_confirm)
+        except BadUsername:
+            return {'bad_username': True}
+        except BadPassword:
+            return {'bad_password': True}
+        except UnmatchedPassword:
+            return {'unmatched_password': True}
+        create_user(request.dbsession, username, password)
+        return HTTPFound('/')
+    return {}
