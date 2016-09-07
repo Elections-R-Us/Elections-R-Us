@@ -98,15 +98,18 @@ def register_view(request):
 def password_change_view(request):
     if request.method == 'POST':
         username = request.authenticated_userid
-        password = request.POST['new_password']
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
         password_confirm = request.POST['password_confirm']
-        change_password(request.dbsession, username, password)
         try:
-            verify_password(password, password_confirm)
+            verify_password(new_password, password_confirm)
         except BadPassword:
             return {'bad_password': True}
         except UnmatchedPassword:
             return {'unmatched_password': True}
+        if not check_login(request.dbsession, username, old_password):
+            return {'failed_login': True}
+        change_password(request.dbsession, username, new_password)
         return {'password_changed': True}
     return {}
 

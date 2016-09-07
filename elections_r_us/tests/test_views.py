@@ -218,6 +218,19 @@ def test_password_change_unmatched_password(session_with_user, p1, p2):
     assert 'unmatched_password' in response
 
 
+def test_password_change_failed_login(session_with_user):
+    from ..views.default import password_change_view
+    session, username, old_password = session_with_user
+    new_password = 'good password'
+    request = dummy_post_request(session, {
+        'old_password': old_password + '!',
+        'new_password': new_password,
+        'password_confirm': new_password
+    })
+    response = password_change_view(request)
+    assert 'failed_login' in response
+
+
 @pytest.mark.parametrize('password', VALID_PASSWORDS)
 def test_password_verify_success(password):
     from ..views.default import verify_password
