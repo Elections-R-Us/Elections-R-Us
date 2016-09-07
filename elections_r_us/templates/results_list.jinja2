@@ -1,19 +1,21 @@
 {% extends "index.jinja2" %}
 {% block body %}
-{% if response %}
-  {% for item in response %}
-  {% if item.contests.type is 'general election' %}
+{% if contests %}
+  {% for item in contests %}
+  {{ item.type }}
+  {% if 'general election' in item.type %}
     <div class="collection z-depth-2">
-      <a class="collection-item indigo"><h4 class="white-text">{{ item.contests.office }}</h4></a>
-      <a href="#!" class="collection-item">{{ item.contests.candidate.name}}</a>
+      <a class="collection-item indigo"><h4 class="white-text">{{ item.office }}</h4></a>
+      <a href="#!" class="collection-item"></a>
     </div>
   {% endif %}
-  {% if item.contests.type is 'referendum' %}
+  {% if 'referendum' in item.type %}
     <div class="collection z-depth-2">
-      <a class="collection-item indigo"><h4 class="white-text">{{ item.contests.referendumTitle }}</h4></a>
-      <a href="#!" class="collection-item">{{ item.contests.referendumText }}</a>
+      <a class="collection-item indigo"><h4 class="white-text"></h4></a>
+      <a href="#!" class="collection-item"></a>
     </div>
   {% endif %}
   {% endfor %}
 {% endif %}
+
 {% endblock %}
