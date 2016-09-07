@@ -33,6 +33,8 @@ def create_user(session, username, password):
 
 def change_password(session, username, new_password):
     user = session.query(User).filter(User.username == username).first()
+    if user is None:
+        import pdb; pdb.set_trace()
     user.password = pwd_context.encrypt(new_password)
 
 
