@@ -165,28 +165,36 @@ def get_civic_info(address):
         return None
 
 
+def post_to_favorite_candidate(post_dict):
+    return FavoriteCandidate(
+        userid=post_dict['userid'],
+        candidatename=post_dict['candidatename'],
+        party=post_dict['party'],
+        office=post_dict['office'],
+        website=post_dict['website'],
+        email=post_dict['email'],
+        phone=post_dict['phone']
+    )
+
+
+def post_to_favorite_referendum(post_dict):
+    return FavoriteReferendum(
+        title=post_dict['title'],
+        brief=post_dict['brief'],
+        position=post_dict['position'],
+        userid=post_dict['userid']
+    )
+
+
 def favorite_candidate_view(request):
     if request.method == 'POST':
-        request.dbsession.add(FavoriteCandidate(
-            userid=request.POST['userid'],
-            candidatename=request.POST['candidatename'],
-            party=request.POST['party'],
-            office=request.POST['office'],
-            website=request.POST['website'],
-            email=request.POST['email'],
-            phone=request.POST['phone']
-        ))
+        request.dbsession.add(post_to_favorite_candidate(request.POST))
     return {}
 
 
 def favorite_referendum_view(request):
     if request.method == 'POST':
-        request.dbsession.add(FavoriteReferendum(
-            title=request.POST['title'],
-            brief=request.POST['brief'],
-            position=request.POST['position'],
-            userid=request.POST['userid']
-        ))
+        request.dbsession.add(post_to_favorite_referendum(request.POST))
     return {}
 
 
