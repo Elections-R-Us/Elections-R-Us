@@ -5,7 +5,7 @@ import pytest
 import transaction
 from pyramid import testing
 from ..security import pwd_context
-from ..views.default import registration_input
+from ..views.default import UserInfo, RegistrationInput
 
 from ..models import (
     get_engine,
@@ -64,11 +64,24 @@ def session_with_user(new_session):
 
 
 @pytest.fixture
+def valid_user():
+    return UserInfo(
+        username='user',
+        password='secure password',
+        email='email@example.org',
+        address='901 12th Avenue, Seattle, WA 98503'
+    )
+
+
+@pytest.fixture
 def valid_registration():
-    return registration_input(
+    return RegistrationInput(
         username='user',
         password='secure password',
         password_confirm='secure password',
         email='email@example.org',
-        address='901 12th Avenue Seattle WA 98503',
+        street='901 12th Avenue',
+        city='Seattle',
+        state='WA',
+        zip='98503'
     )

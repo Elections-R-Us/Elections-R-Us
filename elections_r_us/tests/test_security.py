@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 from ..models import User
 
 
-def test_user_gets_created(new_session, valid_registration):
+def test_user_gets_created(new_session, valid_user):
     """Test that after create_user adds to the database."""
     from ..security import create_user
-    create_user(new_session, valid_registration)
+    create_user(new_session, valid_user)
     assert len(new_session.query(User).all()) == 1
 
 

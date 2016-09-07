@@ -118,8 +118,32 @@ def registration_input_to_dict(registration_input):
         'password': registration_input.password,
         'password_confirm': registration_input.password_confirm,
         'email': registration_input.email,
-        'address': registration_input.address
+        'street': registration_input.street,
+        'city': registration_input.city,
+        'state': registration_input.state,
+        'zip': registration_input.zip
     }
+
+
+def test_build_address_has_street():
+    from ..views.default import build_address
+    assert 'street' in build_address('street', 'b', 'c', 'd')
+
+
+def test_build_address_has_city():
+    from ..views.default import build_address
+    assert 'city' in build_address('a', 'city', 'c', 'd')
+
+
+def test_build_address_has_state():
+    from ..views.default import build_address
+    assert 'state' in build_address('a', 'c', 'state', 'd')
+
+
+def test_build_address_has_zip():
+    from ..views.default import build_address
+    assert '99920' in build_address('a', 'b', 'c', '99920')
+
 
 
 def test_register_view_success(new_session, valid_registration):

@@ -11,14 +11,30 @@ import googleapiclient.discovery as discovery
 from ..models import User
 from ..security import check_login, create_user, change_password
 
+ELECTION_ID = 5000  # id for the current election (according to the google api)
 
-registration_input = namedtuple(
+
+_RegistrationInput = namedtuple(
     'credentials',
-    'username password password_confirm email address'
+    'username password password_confirm email street city state zip'
 )
 
 
-ELECTION_ID = 5000
+class RegistrationInput(_RegistrationInput):
+    """RegistrationInput represents the input for the registration form.
+
+    This is for unprocessed inputs-- eventually (if the
+    RegistrationInput is valid), the relevant data is transfered to a
+    UserInfo object."""
+    pass
+
+
+class UserInfo(namedtuple('credentials', 'username password email address')):
+    """UserInfo represents a user as it is modeled in the database.
+
+    This is for a user which has already been added to the database,
+    or one which is about to be added."""
+    pass
 
 
 class BadLoginInfo(Exception):
@@ -75,21 +91,37 @@ def logout_view(request):
     return HTTPFound(location='/', headers=forget(request))
 
 
+def build_address(street, city, state, zip_code):
+    return '{}, {}, {} {}'.format(street, city, state, zip_code)
+
+
 @view_config(route_name='register', renderer="templates/register.jinja2")
 def register_view(request):
     if request.method == 'POST':
-        credentials = registration_input(
+        credentials = RegistrationInput(
             username=request.POST['username'],
             password=request.POST['password'],
             password_confirm=request.POST['password_confirm'],
-            address=request.POST['address'],
+            street=request.POST['street'],
+            city=request.POST['city'],
+            state=request.POST['state'],
+            zip=request.POST['zip'],
             email=request.POST['email']
         )
         try:
             verify_registration(credentials)
         except BadLoginInfo as bad:
             return failure_info(bad.info)
-        create_user(request.dbsession, credentials)
+        create_user(request.dbsession, UserInfo(
+            username=credentials.username,
+            password=credentials.username,
+            email=credentials.username,
+            address=build_address(
+                credentials.street,
+                credentials.city,
+                credentials.state,
+                credentials.zip,
+            )))
         return HTTPFound(location='/')
     return {}
 

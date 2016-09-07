@@ -20,16 +20,16 @@ class Root(object):
     ]
 
 
-def create_user(session, registration_input):
+def create_user(session, info):
     """Add a new user to the database.
 
     session is expected to be a dbsession, username and password are
     expected to be (unencrypted) unicode strings."""
     session.add(User(
-        username=registration_input.username,
-        password=pwd_context.encrypt(registration_input.password),
-        email=registration_input.email,
-        address=registration_input.address
+        username=info.username,
+        password=pwd_context.encrypt(info.password),
+        email=info.email,
+        address=info.address
     ))
 
 
