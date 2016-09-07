@@ -13,6 +13,8 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(UnicodeText)
+    email = Column(UnicodeText)
+    address = Column(UnicodeText)
     password = Column(Text)
 
 
