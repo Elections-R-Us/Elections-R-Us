@@ -321,12 +321,12 @@ def favorite_candidate_post_results(session_with_user):
         }))
 
 
-def test_favorite_candidate_redirects(favorite_candidate_post_results):
+def test_favorite_candidate_returns_dict(favorite_candidate_post_results):
     session, results = favorite_candidate_post_results
     assert isinstance(results, dict)
 
 
-def test_favorite_candidate_view_saves(favorite_candidate_post_results):
+def test_favorite_candidate_view_stores(favorite_candidate_post_results):
     from ..models import FavoriteCandidate
     session, results = favorite_candidate_post_results
     query = session.query(FavoriteCandidate)
