@@ -4,6 +4,7 @@ from pyramid.security import remember, forget
 
 from ..models import User
 from ..security import check_login, create_user, change_password
+from .test_dict import test_dict
 
 
 class BadUsername(Exception):
@@ -40,7 +41,7 @@ def user_exists(session, username):
     return len(query) > 0
 
 
-@view_config(route_name='home', renderer='templates/home.jinja2')
+@view_config(route_name='home', renderer='templates/index.jinja2')
 def home_view(request):
     return {}
 
@@ -101,3 +102,9 @@ def password_reset_view(request):
             return {'unmatched_password': True}
         return {'password_reset': True}
     return {}
+
+
+@view_config(route_name='test', renderer='templates/results_list.jinja2')
+def test_template_view(request):
+    print(test_dict.keys())
+    return test_dict
