@@ -304,7 +304,7 @@ def test_consume_api_success(address):
 
 
 @pytest.fixture
-def favorited_candidate_post_results(session_with_user):
+def favorite_candidate_post_results(session_with_user):
     from ..views.default import favorite_candidate_view
     from ..models import User
     session, username, password = session_with_user
@@ -321,13 +321,13 @@ def favorited_candidate_post_results(session_with_user):
         }))
 
 
-def test_favorite_candidate_redirects(favorited_candidate_post_results):
-    session, results = favorited_candidate_post_results
-    assert isinstance(results, HTTPFound)
+def test_favorite_candidate_redirects(favorite_candidate_post_results):
+    session, results = favorite_candidate_post_results
+    assert isinstance(results, dict)
 
 
-def test_favorite_candidate_view_saves(favorited_candidate_post_results):
-    from ..models import FavoritedCandidate
-    session, results = favorited_candidate_post_results
-    query = session.query(FavoritedCandidate)
+def test_favorite_candidate_view_saves(favorite_candidate_post_results):
+    from ..models import FavoriteCandidate
+    session, results = favorite_candidate_post_results
+    query = session.query(FavoriteCandidate)
     assert len(query.all()) == 1

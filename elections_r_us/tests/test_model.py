@@ -75,7 +75,7 @@ def make_test_candidate(userid):
 
 
 FAVORITE_CANDIDATE_FIELDS = [
-    'userid', 'candidatename', 'party', 'office', 'website', 'email', 'phone'
+    'candidatename', 'party', 'office', 'website', 'email', 'phone'
 ]
 
 
@@ -89,3 +89,11 @@ def test_candidate_stores_field(session_with_user, field):
     session.flush()
     stored_model = session.query(FavoriteCandidate).first()
     assert getattr(stored_model, field) == getattr(test_candidate, field)
+
+
+def test_favoriting_candidate_without_existent_user(new_session):
+    """Test the database rejects favoriting a candidate without a user."""
+    from sqlalchemy.exc import IntegrityError
+    new_session.add(make_test_candidate(150))
+    with pytest.raises(IntegrityError):
+        new_session.flush()

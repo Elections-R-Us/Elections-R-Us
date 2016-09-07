@@ -7,8 +7,6 @@ from sqlalchemy import (
     ForeignKey
 )
 
-from .user import User
-
 from sqlalchemy.orm import relationship
 
 from .meta import Base
@@ -25,8 +23,3 @@ class FavoriteCandidate(Base):
     phone = Column(UnicodeText)
 
     userid = Column(Integer, ForeignKey('users.id'))
-    user = relationship("User", back_populates="favoritecandidates")
-
-User.favoritecandidates = relationship(
-    'FavoriteCandidate', order_by=FavoriteCandidate.id, back_populates='user'
-)
