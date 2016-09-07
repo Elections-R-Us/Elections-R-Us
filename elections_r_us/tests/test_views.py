@@ -333,6 +333,33 @@ def test_favorite_candidate_view_stores(favorite_candidate_post_results):
     assert len(query.all()) == 1
 
 
+@pytest.fixture
+def favorite_referendum_post_results(session_with_user):
+    from ..views.default import favorite_referendum_view
+    from ..models import User
+    session, username, password = session_with_user
+    userid = session.query(User).filter(User.username == username).first().id
+    return session, favorite_referendum_view(dummy_post_request(
+        session, {
+            'userid': userid,
+            'title': 'Initiative Measure No. 1433',
+            'brief': 'concerns labor standards',
+            'position': 'Yes'
+        }))
+
+
+def test_favorite_referendum_returns_dict(favorite_referendum_post_results):
+    session, results = favorite_referendum_post_results
+    assert isinstance(results, dict)
+
+
+def test_favorite_referendum_view_stores(favorite_referendum_post_results):
+    from ..models import FavoriteReferendum
+    session, results = favorite_referendum_post_results
+    query = session.query(FavoriteReferendum)
+    assert len(query.all()) == 1
+
+
 def test_profile_view_favorite_candidates(favorite_candidate_post_results):
     from ..views.default import profile_view
     request = testing.DummyRequest()

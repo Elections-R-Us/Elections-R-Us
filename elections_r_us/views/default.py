@@ -8,7 +8,7 @@ from pyramid.security import remember, forget
 from googleapiclient.errors import HttpError
 import googleapiclient.discovery as discovery
 
-from ..models import User, FavoriteCandidate
+from ..models import User, FavoriteCandidate, FavoriteReferendum
 from ..security import check_login, create_user, change_password
 from .test_dict import test_dict
 
@@ -175,6 +175,17 @@ def favorite_candidate_view(request):
             website=request.POST['website'],
             email=request.POST['email'],
             phone=request.POST['phone']
+        ))
+    return {}
+
+
+def favorite_referendum_view(request):
+    if request.method == 'POST':
+        request.dbsession.add(FavoriteReferendum(
+            title=request.POST['title'],
+            brief=request.POST['brief'],
+            position=request.POST['position'],
+            userid=request.POST['userid']
         ))
     return {}
 
