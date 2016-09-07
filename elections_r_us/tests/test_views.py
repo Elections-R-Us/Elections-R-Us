@@ -145,7 +145,6 @@ def test_build_address_has_zip():
     assert '99920' in build_address('a', 'b', 'c', '99920')
 
 
-
 def test_register_view_success(new_session, valid_registration):
     from ..views.default import register_view
     register_results = register_view(dummy_post_request(
@@ -302,3 +301,33 @@ BAD_ADDRESSES = [  # addresses for which the Google API has no info
 def test_consume_api_success(address):
     from ..views.default import get_civic_info
     assert get_civic_info(address)
+
+
+@pytest.fixture
+def favorited_candidate_post_results(session_with_user):
+    from ..views.default import favorite_candidate_view
+    from ..models import User
+    session, username, password = session_with_user
+    userid = session.query(User).filter(User.username == username).first().id
+    return session, favorite_candidate_view(dummy_post_request(
+        session, {
+            'userid': userid,
+            'candidatename': 'Gary Johnson / Bill Weld',
+            'party': 'Libertarian party',
+            'office': 'President/Vice President',
+            'website': 'http://www.johnsonweld.com',
+            'email': 'info@johnsonweld.com',
+            'phone': '801-303-7922'
+        }))
+
+
+def test_favorite_candidate_redirects(favorited_candidate_post_results):
+    session, results = favorited_candidate_post_results
+    assert isinstance(results, HTTPFound)
+
+
+def test_favorite_candidate_view_saves(favorited_candidate_post_results):
+    from ..models import FavoritedCandidate
+    session, results = favorited_candidate_post_results
+    query = session.query(FavoritedCandidate)
+    assert len(query.all()) == 1
