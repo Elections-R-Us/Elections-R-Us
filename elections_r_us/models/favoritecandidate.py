@@ -7,8 +7,6 @@ from sqlalchemy import (
     ForeignKey
 )
 
-from sqlalchemy.orm import relationship
-
 from .meta import Base
 
 

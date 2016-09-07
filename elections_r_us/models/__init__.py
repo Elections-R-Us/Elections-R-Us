@@ -7,6 +7,7 @@ import zope.sqlalchemy
 # Base.metadata prior to any initialization routines
 from .user import User  # noqa
 from .favoritecandidate import FavoriteCandidate  # noqa
+from .favoritereferendum import FavoriteReferendum  # noqa
 
 # run configure_mappers after defining all of the models to ensure
 # all relationships can be setup
