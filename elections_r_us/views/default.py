@@ -1,4 +1,5 @@
 import os
+from collections import namedtuple
 
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -9,6 +10,12 @@ import googleapiclient.discovery as discovery
 
 from ..models import User
 from ..security import check_login, create_user, change_password
+
+
+registration_input = namedtuple(
+    'credentials',
+    'username password password_confirm email address'
+)
 
 
 ELECTION_ID = 5000
@@ -31,13 +38,13 @@ def verify_password(password, password_confirm):
     return True
 
 
-def verify_registration(username, password, password_confirm):
-    if username == '':
+def verify_registration(inp):
+    if inp.username == '':
         raise BadLoginInfo('bad username')
-    for c in username:
+    for c in inp.username:
         if c != '_' and not c.isalnum():
             raise BadLoginInfo('bad username')
-    return verify_password(password, password_confirm)
+    return verify_password(inp.password, inp.password_confirm)
 
 
 def user_exists(session, username):
@@ -71,14 +78,18 @@ def logout_view(request):
 @view_config(route_name='register', renderer="templates/register.jinja2")
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirm = request.POST['password_confirm']
+        credentials = registration_input(
+            username=request.POST['username'],
+            password=request.POST['password'],
+            password_confirm=request.POST['password_confirm'],
+            address=request.POST['address'],
+            email=request.POST['email']
+        )
         try:
-            verify_registration(username, password, password_confirm)
+            verify_registration(credentials)
         except BadLoginInfo as bad:
             return failure_info(bad.info)
-        create_user(request.dbsession, username, password)
+        create_user(request.dbsession, credentials)
         return HTTPFound(location='/')
     return {}
 

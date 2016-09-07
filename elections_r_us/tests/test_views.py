@@ -41,47 +41,38 @@ UNMATCHED_PASSWORDS = [
 ]
 
 
-@pytest.fixture
-def login_info():
-    return {
-        'username': 'user',
-        'password': 'secure password',
-        'email': 'email@example.org',
-        'street': '901 12th Avenue',
-        'city': 'Seattle',
-        'state': 'WA',
-        'zip': '98503'
-    }
-
-
-@pytest.mark.parametrize('username, password', VALID_LOGINS)
-def test_valid_registration(username, password, login_info):
+def test_valid_registration(valid_registration):
     from ..views.default import verify_registration
-    assert verify_registration(username, password, password)
+    assert verify_registration(valid_registration)
 
 
 @pytest.mark.parametrize('username', BAD_USERNAMES)
-def test_bad_username(username):
+def test_bad_username(username, valid_registration):
     from ..views.default import verify_registration, BadLoginInfo
-    password = 'hello'
     with pytest.raises(BadLoginInfo):
-        verify_registration(username, password, password)
+        verify_registration(valid_registration._replace(username=username))
 
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
-def test_bad_password(password):
+def test_bad_password(password, valid_registration):
     from ..views.default import verify_registration, BadLoginInfo
-    username = 'username'
+    valid_registration = valid_registration._replace(
+        password=password,
+        password_confirm=password
+    )
     with pytest.raises(BadLoginInfo):
-        verify_registration(username, password, password)
+        verify_registration(valid_registration)
 
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
-def test_unmatched_password(p1, p2):
+def test_unmatched_password(p1, p2, valid_registration):
     from ..views.default import verify_registration, BadLoginInfo
-    username = 'username'
+    valid_registration = valid_registration._replace(
+        password=p1,
+        password_confirm=p2
+    )
     with pytest.raises(BadLoginInfo):
-        verify_registration(username, p1, p2)
+        verify_registration(valid_registration)
 
 
 def test_existent_user(session_with_user):
@@ -121,59 +112,67 @@ def test_login_view_failure(new_session):
     assert login_results['failure'] == 'login_failure'
 
 
-@pytest.mark.parametrize('username, password', VALID_LOGINS)
-def test_register_view_success(new_session, username, password):
+def registration_input_to_dict(registration_input):
+    return {
+        'username': registration_input.username,
+        'password': registration_input.password,
+        'password_confirm': registration_input.password_confirm,
+        'email': registration_input.email,
+        'address': registration_input.address
+    }
+
+
+def test_register_view_success(new_session, valid_registration):
     from ..views.default import register_view
-    register_results = register_view(dummy_post_request(new_session, {
-        'username': username,
-        'password': password,
-        'password_confirm': password
-    }))
+    register_results = register_view(dummy_post_request(
+        new_session, registration_input_to_dict(valid_registration)
+    ))
     assert isinstance(register_results, HTTPFound)
 
 
-@pytest.mark.parametrize('username, password', VALID_LOGINS)
-def test_register_view_success_creates_user(new_session, username, password):
+def test_register_view_success_creates_user(new_session, valid_registration):
     from ..views.default import register_view
     from ..models import User
-    register_view(dummy_post_request(new_session, {
-        'username': username,
-        'password': password,
-        'password_confirm': password
-    }))
-    assert new_session.query(User).first().username == username
+    register_view(dummy_post_request(
+        new_session, registration_input_to_dict(valid_registration)
+    ))
+    stored_username = new_session.query(User).first().username
+    assert stored_username == valid_registration.username
 
 
 @pytest.mark.parametrize('username', BAD_USERNAMES)
-def test_register_view_bad_username(new_session, username):
+def test_register_view_bad_username(new_session, username, valid_registration):
     from ..views.default import register_view
-    register_results = register_view(dummy_post_request(new_session, {
-        'username': username,
-        'password': 'password',
-        'password_confirm': 'password'
-    }))
+    registration_input = valid_registration._replace(username=username)
+    register_results = register_view(dummy_post_request(
+        new_session, registration_input_to_dict(registration_input)
+    ))
     assert register_results['failure'] == 'bad username'
 
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
-def test_register_view_bad_password(new_session, password):
+def test_register_view_bad_password(new_session, password, valid_registration):
     from ..views.default import register_view
-    register_results = register_view(dummy_post_request(new_session, {
-        'username': 'username',
-        'password': password,
-        'password_confirm': password
-    }))
+    registration_input = valid_registration._replace(
+        password=password,
+        password_confirm=password
+    )
+    register_results = register_view(dummy_post_request(
+        new_session, registration_input_to_dict(registration_input)
+    ))
     assert register_results['failure'] == 'bad password'
 
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
-def test_register_view_unmatched_passwords(new_session, p1, p2):
+def test_register_view_unmatched_pass(new_session, p1, p2, valid_registration):
     from ..views.default import register_view
-    register_results = register_view(dummy_post_request(new_session, {
-        'username': 'username',
-        'password': p1,
-        'password_confirm': p2
-    }))
+    registration_input = valid_registration._replace(
+        password=p1,
+        password_confirm=p2
+    )
+    register_results = register_view(dummy_post_request(
+        new_session, registration_input_to_dict(registration_input)
+    ))
     assert register_results['failure'] == 'unmatched passwords'
 
 
