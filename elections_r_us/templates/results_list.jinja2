@@ -2,16 +2,17 @@
 {% block body %}
 {% if contests %}
   {% for item in contests %}
-  {{ item.type }}
   {% if 'general election' in item.type %}
     <div class="collection z-depth-2">
       <a class="collection-item indigo"><h4 class="white-text">{{ item.office }}</h4></a>
-      <a href="#!" class="collection-item"></a>
+      {% for name in contests.candidates %}
+      <a href="#!" class="collection-item">{{ name.candidates.name }}</a>
+      {% endfor %}
     </div>
   {% endif %}
   {% if 'referendum' in item.type %}
     <div class="collection z-depth-2">
-      <a class="collection-item indigo"><h4 class="white-text"></h4></a>
+      <a class="collection-item indigo"><h4 class="white-text">{{ item.referendumTitle }}</h4></a>
       <a href="#!" class="collection-item"></a>
     </div>
   {% endif %}

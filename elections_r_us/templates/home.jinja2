@@ -1,9 +1,0 @@
-<h1>HOME </h1>
-
-{% if request.authenticated_userid %}
-  <a href="{{ request.route_path('logout')}}">log out</a>
-  <a href="{{ request.route_path('change_password')}}">change password</a>
-{% else %}
-  <a href="{{ request.route_path('register')}}">register</a>
-  <a href="{{ request.route_path('login')}}">log in</a>
-{% endif %}

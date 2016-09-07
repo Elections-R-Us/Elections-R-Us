@@ -104,7 +104,26 @@ def password_reset_view(request):
     return {}
 
 
-@view_config(route_name='test', renderer='templates/results_list.jinja2')
-def test_template_view(request):
-    print(test_dict.keys())
+@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
+def results_view(request):
+    return test_dict
+
+
+@view_config(route_name='candidate_cards', renderer='templates/candidate_cards.jinja2')
+def candidate_cards_view(request):
+    return test_dict
+
+
+@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
+def address_entry_view(request):
+    return test_dict
+
+
+@view_config(route_name='detail', renderer='templates/detail.jinja2')
+def detail_view(request):
+    return test_dict
+
+
+@view_config(route_name='user_profile', renderer='templates/user_profile.jinja2')
+def user_profile_view(request):
     return test_dict
