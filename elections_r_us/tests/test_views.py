@@ -331,3 +331,10 @@ def test_favorite_candidate_view_stores(favorite_candidate_post_results):
     session, results = favorite_candidate_post_results
     query = session.query(FavoriteCandidate)
     assert len(query.all()) == 1
+
+
+def test_profile_view_favorite_candidates(favorite_candidate_post_results):
+    from ..views.default import profile_view
+    request = testing.DummyRequest()
+    request.dbsession, _ = favorite_candidate_post_results
+    assert len(profile_view(request)['candidates']) > 0

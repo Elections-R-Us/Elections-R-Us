@@ -177,3 +177,11 @@ def favorite_candidate_view(request):
             phone=request.POST['phone']
         ))
     return {}
+
+
+def profile_view(request):
+    query = request.dbsession.query(User)
+    user = query.filter(User.username == request.authenticated_userid).first()
+    return {
+        'candidates': user.favoritecandidates
+    }
