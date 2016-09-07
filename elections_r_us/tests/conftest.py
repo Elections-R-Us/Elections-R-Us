@@ -4,7 +4,8 @@ import os
 import pytest
 import transaction
 from pyramid import testing
-from elections_r_us.security import pwd_context
+from ..security import pwd_context
+from ..views.default import UserInfo, RegistrationInput
 
 from ..models import (
     get_engine,
@@ -22,6 +23,7 @@ def sqlengine(request):
         'sqlalchemy.url': os.environ["DATABASE_URL"]
     })
     config.include("..models")
+    config.testing_securitypolicy(userid='username')
     settings = config.get_settings()
     engine = get_engine(settings)
     Base.metadata.create_all(engine)
@@ -53,7 +55,33 @@ def session_with_user(new_session):
     password = 'password'
     new_session.add(User(
         username=username,
-        password=pwd_context.encrypt(password)
+        password=pwd_context.encrypt(password),
+        email='test@example.org',
+        address='test address',
     ))
     new_session.flush()
     return new_session, username, password
+
+
+@pytest.fixture
+def valid_user():
+    return UserInfo(
+        username='user',
+        password='secure password',
+        email='email@example.org',
+        address='901 12th Avenue, Seattle, WA 98503'
+    )
+
+
+@pytest.fixture
+def valid_registration():
+    return RegistrationInput(
+        username='user',
+        password='secure password',
+        password_confirm='secure password',
+        email='email@example.org',
+        street='901 12th Avenue',
+        city='Seattle',
+        state='WA',
+        zip='98503'
+    )

@@ -1,39 +1,67 @@
+import os
+from collections import namedtuple
+
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 from pyramid.security import remember, forget
+
+from googleapiclient.errors import HttpError
+import googleapiclient.discovery as discovery
 
 from ..models import User
 from ..security import check_login, create_user, change_password
 from .test_dict import test_dict
 
+ELECTION_ID = 5000  # id for the current election (according to the google api)
 
-class BadUsername(Exception):
+
+_RegistrationInput = namedtuple(
+    'credentials',
+    'username password password_confirm email street city state zip'
+)
+
+
+class RegistrationInput(_RegistrationInput):
+    """RegistrationInput represents the input for the registration form.
+
+    This is for unprocessed inputs-- eventually (if the
+    RegistrationInput is valid), the relevant data is transfered to a
+    UserInfo object."""
     pass
 
 
-class BadPassword(Exception):
+class UserInfo(namedtuple('credentials', 'username password email address')):
+    """UserInfo represents a user as it is modeled in the database.
+
+    This is for a user which has already been added to the database,
+    or one which is about to be added."""
     pass
 
 
-class UnmatchedPassword(Exception):
-    pass
+class BadLoginInfo(Exception):
+    def __init__(self, info):
+        self.info = info
+
+
+def failure_info(reason):
+    return {'failure': reason}
 
 
 def verify_password(password, password_confirm):
     if len(password) < 6:
-        raise BadPassword()
+        raise BadLoginInfo('bad password')
     if password != password_confirm:
-        raise UnmatchedPassword()
+        raise BadLoginInfo('unmatched passwords')
     return True
 
 
-def verify_registration(username, password, password_confirm):
-    if username == '':
-        raise BadUsername()
-    for c in username:
+def verify_registration(inp):
+    if inp.username == '':
+        raise BadLoginInfo('bad username')
+    for c in inp.username:
         if c != '_' and not c.isalnum():
-            raise BadUsername()
-    return verify_password(password, password_confirm)
+            raise BadLoginInfo('bad username')
+    return verify_password(inp.password, inp.password_confirm)
 
 
 def user_exists(session, username):
@@ -54,7 +82,7 @@ def login_view(request):
         if check_login(request.dbsession, username, password):
             return HTTPFound('/', headers=remember(request, username))
         else:
-            return {'login_failure': True}
+            return failure_info('login_failure')
     return {}
 
 
@@ -64,21 +92,37 @@ def logout_view(request):
     return HTTPFound(location='/', headers=forget(request))
 
 
+def build_address(street, city, state, zip_code):
+    return '{}, {}, {} {}'.format(street, city, state, zip_code)
+
+
 @view_config(route_name='register', renderer="templates/register.jinja2")
 def register_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirm = request.POST['password_confirm']
+        credentials = RegistrationInput(
+            username=request.POST['username'],
+            password=request.POST['password'],
+            password_confirm=request.POST['password_confirm'],
+            street=request.POST['street'],
+            city=request.POST['city'],
+            state=request.POST['state'],
+            zip=request.POST['zip'],
+            email=request.POST['email']
+        )
         try:
-            verify_registration(username, password, password_confirm)
-        except BadUsername:
-            return {'bad_username': True}
-        except BadPassword:
-            return {'bad_password': True}
-        except UnmatchedPassword:
-            return {'unmatched_password': True}
-        create_user(request.dbsession, username, password)
+            verify_registration(credentials)
+        except BadLoginInfo as bad:
+            return failure_info(bad.info)
+        create_user(request.dbsession, UserInfo(
+            username=credentials.username,
+            password=credentials.password,
+            email=credentials.email,
+            address=build_address(
+                credentials.street,
+                credentials.city,
+                credentials.state,
+                credentials.zip,
+            )))
         return HTTPFound(location='/')
     return {}
 
@@ -88,42 +132,34 @@ def register_view(request):
     renderer='templates/change_password.jinja2',
     permission='login'
 )
-def password_reset_view(request):
+def password_change_view(request):
     if request.method == 'POST':
         username = request.authenticated_userid
-        password = request.POST['password']
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
         password_confirm = request.POST['password_confirm']
-        change_password(request.dbsession, username, password)
         try:
-            verify_password(password, password_confirm)
-        except BadPassword:
-            return {'bad_password': True}
-        except UnmatchedPassword:
-            return {'unmatched_password': True}
-        return {'password_reset': True}
+            verify_password(new_password, password_confirm)
+        except BadLoginInfo as bad:
+            return failure_info(bad.info)
+        if not check_login(request.dbsession, username, old_password):
+            return failure_info('failed login')
+        change_password(request.dbsession, username, new_password)
+        return {'password_changed': True}
     return {}
 
 
-@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
-def results_view(request):
-    return test_dict
-
-
-@view_config(route_name='candidate_cards', renderer='templates/candidate_cards.jinja2')
-def candidate_cards_view(request):
-    return test_dict
-
-
-@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
-def address_entry_view(request):
-    return test_dict
-
-
-@view_config(route_name='detail', renderer='templates/detail.jinja2')
-def detail_view(request):
-    return test_dict
-
-
-@view_config(route_name='user_profile', renderer='templates/user_profile.jinja2')
-def user_profile_view(request):
-    return test_dict
+def get_civic_info(address):
+    civicinfo_service = discovery.build(
+        'civicinfo',
+        'v2',
+        developerKey=os.environ.get('APIKEY')
+    )
+    info_query = civicinfo_service.elections().voterInfoQuery(
+        address=address,
+        electionId=ELECTION_ID
+    )
+    try:
+        return info_query.execute()
+    except HttpError:
+        return None
