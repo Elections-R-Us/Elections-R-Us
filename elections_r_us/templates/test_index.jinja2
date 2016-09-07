@@ -29,18 +29,54 @@
             <li><a href="#" class="waves-effect waves-light">About Us</a></li>
             <li class="dropdown"><a href="#" class="dropdown-toggle waves-effect waves-light" data-toggle="dropdown" role="button" aria-expanded="false">Login / Sign-Up<span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Register</a></li>
+                <li><a data-toggle="modal" data-target="#modalLogin">Login</a></li>
                 <li class="divider"></li>
                 <li><a href="#">User Profile</a></li>
               </ul>
             </li>
           </ul>
+          <div class="modal fade" id="modalLogin" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header text-center">
+                    <h4><i class="fa fa-user"></i> Login</h4>
+                  </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                      <div class="row">
+                        <form class="col-md-12">
+                          <div class="row">
+                            <div class="input-field">
+                              <i class="material-icons prefix">email</i>
+                              <input id="icon_email" type="tel" class="validate">
+                              <label for="icon_email">Your email</label>
+                            </div>
+                            <div class="input-field">
+                              <i class="material-icons prefix">lock</i>
+                              <input id="password" type="password" class="validate">
+                              <label for="password">Password</label>
+                            </div>
+                            <div class="text-center">
+                              <button type="button" class="btn btn-primary waves-effect waves-light">Login</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal">X</button>
+                      <div class="options">
+                        <p>Not a member? <a href="#">Sign Up</a></p>
+                        <p>Forgot <a href="#">Password?</a></p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
         </div>
       </div>
     </nav>
     <main class="container">
-
+      
   <div class="card-panel author-box hoverable">
     <div class="row center-on-small-only">
       <h5 class="text-center">User Profile</h5>
@@ -48,25 +84,29 @@
       <div class="col-sm-3 ">
         <img src="https://openclipart.org/download/247319/abstract-user-flat-3.svg" class="img-responsive">
       </div>
-        <div class="col-sm-9">
-          <h5 class="author-name">UserFirst UserLast</h5>
-          <h5 class="author-name">User Name</h5>
-          <h5 class="author-name">User Password</h5>
-          <h5 class="author-name">User Email</h5>
-
+      <div class="col-sm-9">
+        <h5 class="author-name">User First Name</h5>
+        <h5 class="author-name">User Last Name</h5>
+        <h5 class="author-name">User Address</h5>
+        <h5 class="author-name">User Name</h5>
+        <h5 class="author-name">User Password</h5>
+        <h5 class="author-name">User Email</h5>
+      </div>
+      <div class="row">
+        <form class="col-md-12">
           <div class="row">
-            <form class="col-md-12">
-              <div class="row">
-                <div class="input-field col-md-12">
-                  <input id="email" type="email" class="validate">
-                  <label for="email" data-error="wrong" data-success="right">Change User Email</label>
-                </div>
-              </div>
-            </form>
+            <div class="input-field col-md-12">
+              <input id="email" type="email" class="validate">
+              <label for="email" data-error="wrong" data-success="right">Change User Email</label>
+            </div>
           </div>
-        </div>
+        </form>
+      </div>
     </div>
   </div>
+
+
+
 
     </main>
     <footer class="page-footer container indigo darken-4 center-on-small-only">
@@ -95,3 +135,5 @@
     <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/mdb.min.js"></script>
   </body>
+
+</html>
