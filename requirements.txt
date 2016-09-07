@@ -1,7 +1,6 @@
 backports.shutil-get-terminal-size==1.0.0
 coverage==4.2
 decorator==4.0.10
--e git+git@github.com:Elections-R-Us/Elections-R-Us.git@b6e40cc27284fe6a75dbb3a7ad398dcad9b66018#egg=Elections_R_Us
 ipython==5.1.0
 ipython-genutils==0.1.0
 Jinja2==2.8
