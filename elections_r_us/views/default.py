@@ -114,8 +114,8 @@ def register_view(request):
             return failure_info(bad.info)
         create_user(request.dbsession, UserInfo(
             username=credentials.username,
-            password=credentials.username,
-            email=credentials.username,
+            password=credentials.password,
+            email=credentials.email,
             address=build_address(
                 credentials.street,
                 credentials.city,
