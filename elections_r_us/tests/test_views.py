@@ -164,54 +164,58 @@ def test_register_view_unmatched_passwords(new_session, p1, p2):
     assert register_results == {'unmatched_password': True}
 
 
-# @pytest.mark.parametrize('new_password', VALID_PASSWORDS)
-# def test_password_reset_success(session_with_user, new_password):
-#     from ..views.default import password_reset_view
-#     session, username, old_password = session_with_user
-#     result = password_reset_view(dummy_post_request(session, {
-#         'password': new_password,
-#         'password_confirm': new_password
-#     }))
-#     assert 'password_reset' in result
-#
-#
-# @pytest.mark.parametrize('new_password', VALID_PASSWORDS)
-# def test_password_reset_updates_password(session_with_user, new_password):
-#     from ..views.default import password_reset_view
-#     from ..security import pwd_context
-#     from ..models import User
-#     session, username, old_password = session_with_user
-#     password_reset_view(dummy_post_request(session, {
-#         'password': new_password,
-#         'password_confirm': new_password
-#     }))
-#     assert pwd_context.verify(
-#         new_password,
-#         session.query(User).filter(User.username == username).first().password
-#     )
-#
-#
-# @pytest.mark.parametrize('new_password', BAD_PASSWORDS)
-# def test_password_reset_bad_password(session_with_user, new_password):
-#     from ..views.default import password_reset_view
-#     session, username, old_password = session_with_user
-#     response = password_reset_view(dummy_post_request(session, {
-#         'password': new_password,
-#         'password_confirm': new_password
-#     }))
-#     assert 'bad_password' in response
-#
-#
-# @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
-# def test_password_reset_unmatched_password(session_with_user, p1, p2):
-#     from ..views.default import password_reset_view
-#     session, username, old_password = session_with_user
-#     request = dummy_post_request(session, {
-#         'password': p1,
-#         'password_confirm': p2
-#     })
-#     response = password_reset_view(request)
-#     assert 'unmatched_password' in response
+@pytest.mark.parametrize('new_password', VALID_PASSWORDS)
+def test_password_change_success(session_with_user, new_password):
+    from ..views.default import password_change_view
+    session, username, old_password = session_with_user
+    result = password_change_view(dummy_post_request(session, {
+        'old_password': old_password,
+        'new_password': new_password,
+        'password_confirm': new_password
+    }))
+    assert 'password_changed' in result
+
+
+@pytest.mark.parametrize('new_password', VALID_PASSWORDS)
+def test_password_change_updates_password(session_with_user, new_password):
+    from ..views.default import password_change_view
+    from ..security import pwd_context
+    from ..models import User
+    session, username, old_password = session_with_user
+    password_change_view(dummy_post_request(session, {
+        'old_password': old_password,
+        'new_password': new_password,
+        'password_confirm': new_password
+    }))
+    assert pwd_context.verify(
+        new_password,
+        session.query(User).filter(User.username == username).first().password
+    )
+
+
+@pytest.mark.parametrize('new_password', BAD_PASSWORDS)
+def test_password_change_bad_password(session_with_user, new_password):
+    from ..views.default import password_change_view
+    session, username, old_password = session_with_user
+    response = password_change_view(dummy_post_request(session, {
+        'old_password': old_password,
+        'new_password': new_password,
+        'password_confirm': new_password
+    }))
+    assert 'bad_password' in response
+
+
+@pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
+def test_password_change_unmatched_password(session_with_user, p1, p2):
+    from ..views.default import password_change_view
+    session, username, old_password = session_with_user
+    request = dummy_post_request(session, {
+        'old_password': old_password,
+        'new_password': p1,
+        'password_confirm': p2
+    })
+    response = password_change_view(request)
+    assert 'unmatched_password' in response
 
 
 @pytest.mark.parametrize('password', VALID_PASSWORDS)

@@ -22,6 +22,7 @@ def sqlengine(request):
         'sqlalchemy.url': os.environ["DATABASE_URL"]
     })
     config.include("..models")
+    config.testing_securitypolicy(userid='username')
     settings = config.get_settings()
     engine = get_engine(settings)
     Base.metadata.create_all(engine)

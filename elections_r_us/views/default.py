@@ -95,10 +95,10 @@ def register_view(request):
     renderer='templates/change_password.jinja2',
     permission='login'
 )
-def password_reset_view(request):
+def password_change_view(request):
     if request.method == 'POST':
         username = request.authenticated_userid
-        password = request.POST['password']
+        password = request.POST['new_password']
         password_confirm = request.POST['password_confirm']
         change_password(request.dbsession, username, password)
         try:
@@ -107,9 +107,8 @@ def password_reset_view(request):
             return {'bad_password': True}
         except UnmatchedPassword:
             return {'unmatched_password': True}
-        return {'password_reset': True}
+        return {'password_changed': True}
     return {}
-
 
 
 def get_civic_info(address):
