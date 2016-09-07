@@ -10,6 +10,7 @@ import googleapiclient.discovery as discovery
 
 from ..models import User
 from ..security import check_login, create_user, change_password
+from .test_dict import test_dict
 
 ELECTION_ID = 5000  # id for the current election (according to the google api)
 
@@ -68,7 +69,7 @@ def user_exists(session, username):
     return len(query) > 0
 
 
-@view_config(route_name='home', renderer='templates/home.jinja2')
+@view_config(route_name='home', renderer='templates/index.jinja2')
 def home_view(request):
     return {}
 

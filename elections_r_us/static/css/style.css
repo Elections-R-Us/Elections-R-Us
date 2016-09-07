@@ -7,3 +7,26 @@ footer {
   padding-top: 2em;
   clear: both;
 }
+
+.scrollable-menu {
+  height: auto;
+  max-height: 13em;
+  overflow-x: hidden;
+}
+
+.card-panel {
+    max-width: 50em;
+}
+
+.input-medium {
+    width: 10em;
+    margin: auto;
+}
+
+div.author-box {
+    margin: auto;
+}
+
+#statedropdown {
+    margin-top: 2em;
+}

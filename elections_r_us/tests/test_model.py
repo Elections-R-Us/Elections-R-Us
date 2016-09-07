@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 import pytest
 
-from ..models import User
+from ..models import User, FavoriteCandidate
 
 
 @pytest.fixture
@@ -14,6 +14,7 @@ def example_user():
         email='test@test.com',
         address='test address'
     )
+
     return info, User(
         username=info['username'],
         password=info['password'],
@@ -60,3 +61,31 @@ def test_user_stores_email(new_session, example_user):
     new_session.add(model)
     new_session.flush()
     assert new_session.query(User).first().email == info['email']
+
+def make_test_candidate(userid):
+    return FavoriteCandidate(
+        userid=userid,
+        candidatename='Gary Johnson / Bill Weld',
+        party='Libertarian party',
+        office='President/Vice President',
+        website='http://www.johnsonweld.com',
+        email='info@johnsonweld.com',
+        phone='801-303-7922'
+    )
+
+
+FAVORITE_CANDIDATE_FIELDS = [
+    'userid', 'candidatename', 'party', 'office', 'website', 'email', 'phone'
+]
+
+
+@pytest.mark.parametrize('field', FAVORITE_CANDIDATE_FIELDS)
+def test_candidate_stores_field(session_with_user, field):
+    """Test candidate gets added to a user's favorites."""
+    session, username, password = session_with_user
+    userid = session.query(User).filter(User.username == username).first().id
+    test_candidate = make_test_candidate(userid)
+    session.add(test_candidate)
+    session.flush()
+    stored_model = session.query(FavoriteCandidate).first()
+    assert getattr(stored_model, field) == getattr(test_candidate, field)
