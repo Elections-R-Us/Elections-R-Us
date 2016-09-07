@@ -41,33 +41,46 @@ UNMATCHED_PASSWORDS = [
 ]
 
 
+@pytest.fixture
+def login_info():
+    return {
+        'username': 'user',
+        'password': 'secure password',
+        'email': 'email@example.org',
+        'street': '901 12th Avenue',
+        'city': 'Seattle',
+        'state': 'WA',
+        'zip': '98503'
+    }
+
+
 @pytest.mark.parametrize('username, password', VALID_LOGINS)
-def test_valid_registration(username, password):
+def test_valid_registration(username, password, login_info):
     from ..views.default import verify_registration
     assert verify_registration(username, password, password)
 
 
 @pytest.mark.parametrize('username', BAD_USERNAMES)
 def test_bad_username(username):
-    from ..views.default import verify_registration, BadUsername
+    from ..views.default import verify_registration, BadLoginInfo
     password = 'hello'
-    with pytest.raises(BadUsername):
+    with pytest.raises(BadLoginInfo):
         verify_registration(username, password, password)
 
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
 def test_bad_password(password):
-    from ..views.default import verify_registration, BadPassword
+    from ..views.default import verify_registration, BadLoginInfo
     username = 'username'
-    with pytest.raises(BadPassword):
+    with pytest.raises(BadLoginInfo):
         verify_registration(username, password, password)
 
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
 def test_unmatched_password(p1, p2):
-    from ..views.default import verify_registration, UnmatchedPassword
+    from ..views.default import verify_registration, BadLoginInfo
     username = 'username'
-    with pytest.raises(UnmatchedPassword):
+    with pytest.raises(BadLoginInfo):
         verify_registration(username, p1, p2)
 
 
@@ -105,7 +118,7 @@ def test_login_view_failure(new_session):
         'username': 'username',
         'password': 'password'
     }))
-    assert login_results == {'login_failure': True}
+    assert login_results['failure'] == 'login_failure'
 
 
 @pytest.mark.parametrize('username, password', VALID_LOGINS)
@@ -139,7 +152,7 @@ def test_register_view_bad_username(new_session, username):
         'password': 'password',
         'password_confirm': 'password'
     }))
-    assert register_results == {'bad_username': True}
+    assert register_results['failure'] == 'bad username'
 
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
@@ -150,7 +163,7 @@ def test_register_view_bad_password(new_session, password):
         'password': password,
         'password_confirm': password
     }))
-    assert register_results == {'bad_password': True}
+    assert register_results['failure'] == 'bad password'
 
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
@@ -161,7 +174,7 @@ def test_register_view_unmatched_passwords(new_session, p1, p2):
         'password': p1,
         'password_confirm': p2
     }))
-    assert register_results == {'unmatched_password': True}
+    assert register_results['failure'] == 'unmatched passwords'
 
 
 @pytest.mark.parametrize('new_password', VALID_PASSWORDS)
@@ -202,7 +215,7 @@ def test_password_change_bad_password(session_with_user, new_password):
         'new_password': new_password,
         'password_confirm': new_password
     }))
-    assert 'bad_password' in response
+    assert response['failure'] == 'bad password'
 
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
@@ -215,7 +228,7 @@ def test_password_change_unmatched_password(session_with_user, p1, p2):
         'password_confirm': p2
     })
     response = password_change_view(request)
-    assert 'unmatched_password' in response
+    assert response['failure'] == 'unmatched passwords'
 
 
 def test_password_change_failed_login(session_with_user):
@@ -228,7 +241,7 @@ def test_password_change_failed_login(session_with_user):
         'password_confirm': new_password
     })
     response = password_change_view(request)
-    assert 'failed_login' in response
+    assert response['failure'] == 'failed login'
 
 
 @pytest.mark.parametrize('password', VALID_PASSWORDS)
@@ -239,15 +252,15 @@ def test_password_verify_success(password):
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
 def test_password_verify_bad(password):
-    from ..views.default import verify_password, BadPassword
-    with pytest.raises(BadPassword):
+    from ..views.default import verify_password, BadLoginInfo
+    with pytest.raises(BadLoginInfo):
         verify_password(password, password)
 
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
 def test_password_verify_unmatched(p1, p2):
-    from ..views.default import verify_password, UnmatchedPassword
-    with pytest.raises(UnmatchedPassword):
+    from ..views.default import verify_password, BadLoginInfo
+    with pytest.raises(BadLoginInfo):
         verify_password(p1, p2)
 
 

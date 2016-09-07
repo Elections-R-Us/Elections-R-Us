@@ -14,32 +14,29 @@ from ..security import check_login, create_user, change_password
 ELECTION_ID = 5000
 
 
-class BadUsername(Exception):
-    pass
+class BadLoginInfo(Exception):
+    def __init__(self, info):
+        self.info = info
 
 
-class BadPassword(Exception):
-    pass
-
-
-class UnmatchedPassword(Exception):
-    pass
+def failure_info(reason):
+    return {'failure': reason}
 
 
 def verify_password(password, password_confirm):
     if len(password) < 6:
-        raise BadPassword()
+        raise BadLoginInfo('bad password')
     if password != password_confirm:
-        raise UnmatchedPassword()
+        raise BadLoginInfo('unmatched passwords')
     return True
 
 
 def verify_registration(username, password, password_confirm):
     if username == '':
-        raise BadUsername()
+        raise BadLoginInfo('bad username')
     for c in username:
         if c != '_' and not c.isalnum():
-            raise BadUsername()
+            raise BadLoginInfo('bad username')
     return verify_password(password, password_confirm)
 
 
@@ -61,7 +58,7 @@ def login_view(request):
         if check_login(request.dbsession, username, password):
             return HTTPFound('/', headers=remember(request, username))
         else:
-            return {'login_failure': True}
+            return failure_info('login_failure')
     return {}
 
 
@@ -79,12 +76,8 @@ def register_view(request):
         password_confirm = request.POST['password_confirm']
         try:
             verify_registration(username, password, password_confirm)
-        except BadUsername:
-            return {'bad_username': True}
-        except BadPassword:
-            return {'bad_password': True}
-        except UnmatchedPassword:
-            return {'unmatched_password': True}
+        except BadLoginInfo as bad:
+            return failure_info(bad.info)
         create_user(request.dbsession, username, password)
         return HTTPFound(location='/')
     return {}
@@ -103,12 +96,10 @@ def password_change_view(request):
         password_confirm = request.POST['password_confirm']
         try:
             verify_password(new_password, password_confirm)
-        except BadPassword:
-            return {'bad_password': True}
-        except UnmatchedPassword:
-            return {'unmatched_password': True}
+        except BadLoginInfo as bad:
+            return failure_info(bad.info)
         if not check_login(request.dbsession, username, old_password):
-            return {'failed_login': True}
+            return failure_info('failed login')
         change_password(request.dbsession, username, new_password)
         return {'password_changed': True}
     return {}
