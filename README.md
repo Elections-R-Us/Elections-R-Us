@@ -1,5 +1,5 @@
 # Elections-R-Us
-### Week 5 project for Code Fellows Seattle PY 401
+## Week 5 project for Code Fellows Seattle PY 401
 
 
 Elections-R-Us is a portal for voters looking for more information on prospective candidates up for election.
@@ -8,8 +8,19 @@ with candidates based on their geographical location and their voting history wh
 from a wide variety of publicly available sources.
 
 
-#### Team Members:
+## Team Members:
 - Jeffrey Russell
 - Crystal Lessor
 - Justin Lange
 - Jeff Torres
+
+## Setup
+1. Clone this repo
+2. Create a new virtual environment
+3. Run `createdb elections_r_us`
+4. Edit your new environment's activate script, adding this line:
+`export DATABASE_URL=postgres:///elections_r_us`
+5. Activate and install:
+```pip install -U pip setuptools -e .[testing]```
+6. Run `init_db development.ini`
+7. Run `pserve development.ini`

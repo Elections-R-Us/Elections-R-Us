@@ -1,0 +1,153 @@
+/*********************
+Additional button styles
+**********************/
+
+
+
+.btn-rounded {
+    @include border-radius(10em);
+}
+.btn-border-default {
+   background-color: transparent;
+    border: 2px solid $default-color;
+    color: $default-color-dark;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $default-color;
+    }
+}
+.btn-border-primary {
+    background-color: transparent;
+    border: 2px solid $primary-color;
+    color: $primary-color-dark;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $primary-color;
+    }
+}
+.btn-border-success {
+   background-color: transparent;
+    border: 2px solid $success-color;
+    color: $success-color-dark;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $success-color;
+    }
+}
+.btn-border-info {
+   background-color: transparent;
+    border: 2px solid $info-color;
+    color: $info-color-dark;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $info-color;
+    }
+}
+.btn-border-warning {
+    background-color: transparent;
+    border: 2px solid $warning-color;
+    color: $warning-color-dark;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $warning-color;
+    }
+}
+.btn-border-danger {
+    background-color: transparent;
+    border: 2px solid $danger-color;
+    color: $danger-color-dark;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: $danger-color;
+    }
+}
+
+.btn-border-light {
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: #fff;
+    }
+}
+
+.btn-border-dark {
+    background-color: transparent;
+    border: 2px solid #000;
+    color: #000;
+    &:hover,
+    &:focus {
+        background-color: transparent;
+        color: #000;
+    }
+}
+
+// Floating Action Button (FAB)
+.btn-fab {
+    margin: 0;
+    padding: 15px;
+    font-size: 26px;
+    width: 56px;
+    height: 56px;
+    &,
+    &:hover {
+        //.variations(#{""}, background-color, transparent);
+    }
+    &,
+    .ripple-wrapper {
+        border-radius: 100%; 
+    }
+    &.btn-mini {
+        width: 40px;
+        height: 40px;
+        padding: 13px;
+        font-size: 15px;
+    }
+} 
+
+// Fixed Action Button
+.fixed-action-btn {  
+    position: fixed;
+    right: 23px;
+    bottom: 23px;
+    padding-top: 15px;
+    margin-bottom: 0;
+    z-index: 998;
+    ul {
+        left: 0;
+        right: 0;
+        text-align: center;
+        position: absolute;
+        bottom: 64px;
+        margin: 0;
+        li {
+            margin-bottom: 15px;
+        }
+        a.btn-floating {
+            opacity: 0;
+        }
+    }
+}
+
+// Transparen flat button
+.btn-flat {
+    background-color: transparent;
+    position: relative;
+    padding: 8px 30px;
+    border: none;
+    margin: 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+    outline: none !important;
+    &:focus {
+        background-color: transparent;
+    }
+}

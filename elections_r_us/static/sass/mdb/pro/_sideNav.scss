@@ -1,0 +1,375 @@
+/*********************
+SideNav
+**********************/
+
+.side-nav {
+    width: 240px;
+    position: fixed;
+    left: -105%;
+    top: 0;
+    margin: 0;
+    height: 100%;
+    height: calc(100% + 60px);
+    height: -moz-calc(100%); //Temporary Firefox Fix
+    padding-bottom: 60px;
+    background-color: $sidenav-bg-color;
+    z-index: 999;
+    overflow-y: auto;
+    @extend .z-depth-1;
+    will-change: left;
+    // Right Align
+    &.right-aligned {
+        will-change: right;
+        right: -105%;
+        left: auto;
+    }
+    .collapsible {
+        margin: 0;
+        .fa {
+            margin-right: 6px;
+        }
+    }
+    .collapsible-body a {
+        padding-left: 50px;
+    }
+    li {
+        padding: 0;
+        background-color: #fff;
+        &:hover,
+        &.active {
+            background-color: #ddd;
+        }
+    }
+    a {
+        display: block;
+        font-size: 1rem;
+        height: 64px;
+        line-height: 64px;
+        padding-left: 30px;
+    }
+    .bold {
+        font-weight: bold;
+    }
+    // SideNav logo
+    .logo-wrapper {
+        a {
+            height: auto;
+            width: auto;
+            margin: 0;
+            padding: 0;
+        }
+    }
+    // About
+    .about {
+        padding: 14px;
+        p {
+            font-size: 16px;
+        }
+    }
+    //Social
+    .social {
+        padding: 0;
+        a {
+            padding: 0;
+            margin: 10px;
+            line-height: 40px;
+            height: 40px;
+        }
+    }
+    //Search form
+    .search-from {
+        padding: 10px 28px;
+        &.input-dark-bg {
+            // Style Placeholders
+            ::-webkit-input-placeholder {
+                color: #fff!important;
+                font-weight: 300;
+                padding-left: 2rem;
+            }
+            :-moz-placeholder {
+                /* Firefox 18- */
+                color: #fff!important;
+                font-weight: 300;
+            }
+            ::-moz-placeholder {
+                /* Firefox 19+ */
+                color: #fff!important;
+                font-weight: 300;
+            }
+            :-ms-input-placeholder {
+                color: #fff!important;
+                font-weight: 300;
+            }
+            input[type=text] {
+                border-bottom: 1px solid #fff;
+            }
+            .form-control {
+                color: #fff;
+            }
+        }
+         &.input-light-bg {
+            // Style Placeholders
+            ::-webkit-input-placeholder {
+                color: #1C2331!important;
+                font-weight: 300;
+            }
+            :-moz-placeholder {
+                /* Firefox 18- */
+                color: #1C2331!important;
+                font-weight: 300;
+            }
+            ::-moz-placeholder {
+                /* Firefox 19+ */
+                color: #1C2331!important;
+                font-weight: 300;
+            }
+            :-ms-input-placeholder {
+                color: #1C2331!important;
+                font-weight: 300;
+            }
+            input[type=text] {
+                border-bottom: 1px solid #1C2331;
+            }
+            .form-control {
+                color: #1C2331;
+            }
+        }
+    }
+}
+
+// Default SideNav
+.default-side-nav {
+    img {
+        padding: 30px;
+    }
+}
+
+// Personal SideNav
+.personal-side-nav {
+    .avatar-wrapper {
+        padding: 50px 80px;
+    }
+    img {
+        border: 2px solid #fff
+    }
+}
+
+// Admin SideNav
+.admin-side-nav {
+    img {
+        max-width: 70px;
+        padding: 20px 10px;
+        float: left;
+    }
+    p {
+        font-size: 15px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin: 0;
+    }
+    &.light-side-nav {
+        li {
+            border-bottom: 1px solid #eee;
+        }
+    }
+    &.dark-side-nav {
+        li {
+            border-bottom: 1px solid $elegant-color;
+        }
+    }
+    &.colorful-side-nav {
+        li {
+            border-bottom: 1px solid #00897b;
+        }
+    }
+    &.stylish-side-nav {
+        li {
+            border-bottom: 1px solid $stylish-color;
+        }
+    }
+}
+
+// Light Variation
+.light-side-nav {
+    .logo-wrapper {
+        background: url("http://mdbootstrap.com/images/regular/nature/img%20(1).jpg") no-repeat center center;
+        background-size: cover;
+    }
+    p {
+        color: #1C2331;
+    }
+    .collapsible a {
+        color: #1C2331;
+    }
+    .social {
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+    }
+    .navbar-form {
+        margin: 10px;
+        ;
+    }
+}
+
+// Dark Variation
+.dark-side-nav {
+    background-color: $elegant-color-dark;
+    .logo-wrapper {
+        background: url("http://mdbootstrap.com/images/regular/nature/img%20(17).jpg") no-repeat center center;
+        background-size: cover;
+    }
+    li {
+        background-color: $elegant-color-dark;
+        &:hover,
+        &.active {
+            background-color: $elegant-color;
+        }
+    }
+    p {
+        color: #fff;
+    }
+    .collapsible a {
+        color: #fff;
+        &:active {
+            background-color: $elegant-color;
+        }
+        &.active {
+            background-color: $elegant-color;
+        }
+    }
+    .social {
+        border-top: 1px solid $stylish-color;
+        border-bottom: 1px solid $stylish-color;
+        a {
+            color: #fff;
+        }
+    }
+}
+
+// Colorful Variation
+.colorful-side-nav {
+    background-color: $default-color-dark;
+    .logo-wrapper {
+        background: url("http://mdbootstrap.com/images/regular/nature/img%20(23).jpg") no-repeat center center;
+        background-size: cover;
+    }
+    li {
+        background-color: $default-color-dark;
+        &:hover,
+        &.active {
+            background-color: lighten( $default-color-dark, 5%);
+        }
+    }
+    p {
+        color: #fff;
+    }
+    .collapsible a {
+        color: #fff;
+        &:active {
+            background-color: $default-color;
+        }
+        &.active {
+            background-color: $default-color;
+        }
+    }
+    .social {
+        border-top: 1px solid #26a69a;
+        border-bottom: 1px solid #26a69a;
+        a {
+            color: #fff;
+        }
+    }
+}
+
+// Stylish Variation
+// Dark Variation
+.stylish-side-nav {
+    background-color: $stylish-color-dark;
+    .logo-wrapper {
+        background: url("http://mdbootstrap.com/images/regular/nature/img%20(26).jpg") no-repeat center center;
+        background-size: cover;
+    }
+    li {
+        background-color: $stylish-color-dark;
+        &:hover,
+        &.active {
+            background-color: $stylish-color;
+        }
+    }
+    p {
+        color: #fff;
+    }
+    .collapsible a {
+        color: #fff;
+        &:active {
+            background-color: $stylish-color;
+        }
+        &.active {
+            background-color: $stylish-color;
+        }
+    }
+    .social {
+        border-top: 1px solid $stylish-color;
+        border-bottom: 1px solid $stylish-color;
+        a {
+            color: #fff;
+        }
+    }
+}
+
+// Touch interaction
+.drag-target {
+    height: 100%;
+    width: 10px;
+    position: fixed;
+    top: 0;
+    z-index: 998;
+}
+
+// Hidden side-nav for all sizes
+.side-nav.fixed {
+    a {
+        display: block;
+    }
+}
+
+// Fixed side-nav shown
+.side-nav.fixed {
+    left: 0;
+    position: fixed;
+    // Right Align
+    &.right-aligned {
+        right: 0;
+        left: auto;
+    }
+}
+
+// Fixed sideNav hide on smaller 
+@media #{$medium-and-down} {
+    .side-nav.fixed {
+        left: -105%;
+        &.right-aligned {
+            right: -105%;
+            left: auto;
+        }
+    }
+}
+
+#sidenav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120vh;
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 997;
+    will-change: opacity;
+}
+
+//Button Collapse Without Navbar
+.side-nav .double-navbar .bc-min {
+    padding: 5px 10px;
+    .button-collapse {
+        padding-left: 0px;
+    }
+}

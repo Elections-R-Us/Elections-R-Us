@@ -1,0 +1,103 @@
+{% extends 'index.jinja2' %}
+{% block body %}
+
+  <div class="card-panel author-box">
+    <div class="row center-on-small-only">
+      <h5 class="text-center">User Profile</h5>
+      <hr>
+      <div class="col-md-4 ">
+        <img src="https://openclipart.org/download/247319/abstract-user-flat-3.svg" class="img-responsive">
+      </div>
+        <form class="col-md-8">
+          <div class="row">
+            <div class="input-field col-md-4">
+              <input placeholder="" id="first_name" type="text" class="validate">
+              <label for="first_name">First Name</label>
+            </div>
+            <div class="input-field col-md-4">
+              <input placeholder="" id="last_name" type="text" class="validate">
+              <label for="last_name">Last Name</label>
+            </div>
+          </div>
+              <div class="row">
+                <div class="input-field col-md-8">
+                  <input placeholder="" id="email" type="email" class="validate">
+                  <label for="email" data-error="wrong" data-success="right">Email</label>
+                </div>
+              </div>
+          <div class="row">
+            <div class="input-field col-md-8">
+              <input  placeholder="" name="street_address" id="address" type="text" class="validate">
+              <label for="address">Street Address</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col-md-3">
+              <input placeholder="" name="city" id="city" type="text" class="validate">
+              <label for="city">City</label>
+            </div>
+              <div class="dropdown col-md-2">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">State<span class="caret"></span></button>
+                <ul class="dropdown-menu scrollable-menu">
+                  <li><a href="#" value="al">Alabama</a></li>
+                  <li><a href="#" value="ak">Alaska</a></li>
+                  <li><a href="#" value="az">Arizona</a></li>
+                  <li><a href="#" value="ar">Arkansas</a></li>
+                  <li><a href="#" value="ca">California</a></li>
+                  <li><a href="#" value="co">Colorado</a></li>
+                  <li><a href="#" value="ct">Connecticut</a></li>
+                  <li><a href="#" value="de">Delaware</a></li>
+                  <li><a href="#" value="fl">Florida</a></li>
+                  <li><a href="#" value="ga">Georgia</a></li>
+                  <li><a href="#" value="hi">Hawaii</a></li>
+                  <li><a href="#" value="id">Idaho</a></li>
+                  <li><a href="#" value="il">Illinois</a></li>
+                  <li><a href="#" value="in">Indiana</a></li>
+                  <li><a href="#" value="ia">Iowa</a></li>
+                  <li><a href="#" value="ks">Kansas</a></li>
+                  <li><a href="#" value="ky">Kentucky</a></li>
+                  <li><a href="#" value="la">Louisiana</a></li>
+                  <li><a href="#" value="me">Maine</a></li>
+                  <li><a href="#" value="md">Maryland</a></li>
+                  <li><a href="#" value="ma">Massachusetts</a></li>
+                  <li><a href="#" value="mi">Michigan</a></li>
+                  <li><a href="#" value="mn">Minnesota</a></li>
+                  <li><a href="#" value="ms">Mississippi</a></li>
+                  <li><a href="#" value="mo">Missouri</a></li>
+                  <li><a href="#" value="mt">Montana</a></li>
+                  <li><a href="#" value="ne">Nebraska</a></li>
+                  <li><a href="#" value="nv">Nevada</a></li>
+                  <li><a href="#" value="nh">New Hampshire</a></li>
+                  <li><a href="#" value="nj">New Jersey</a></li>
+                  <li><a href="#" value="nm">New Mexico</a></li>
+                  <li><a href="#" value="ny">New York</a></li>
+                  <li><a href="#" value="nc">North Carolina</a></li>
+                  <li><a href="#" value="nd">North Dakota</a></li>
+                  <li><a href="#" value="oh">Ohio</a></li>
+                  <li><a href="#" value="or">Oregon</a></li>
+                  <li><a href="#" value="pa">Pennsylvania</a></li>
+                  <li><a href="#" value="ri">Rhode Island</a></li>
+                  <li><a href="#" value="sc">South Carolina</a></li>
+                  <li><a href="#" value="sd">South Dakota</a></li>
+                  <li><a href="#" value="tn">Tennessee</a></li>
+                  <li><a href="#" value="tx">Texas</a></li>
+                  <li><a href="#" value="ut">Utah</a></li>
+                  <li><a href="#" value="vt">Vermont</a></li>
+                  <li><a href="#" value="va">Virginia</a></li>
+                  <li><a href="#" value="wa">Washington</a></li>
+                  <li><a href="#" value="wv">West Virginia</a></li>
+                  <li><a href="#" value="wi">Wisconsin</a></li>
+                  <li><a href="#" value="wy">Wyoming</a></li>
+                </ul>
+              </div>
+            <div class="input-field col-md-3">
+              <input placeholder="" name="zip_code" id="zip_code" type="text" class="validate">
+              <label for="zip_code">Zip Code</label>
+            </div>
+          </div>
+        </div>
+        </form>
+    </div>
+  </div>
+
+{% endblock %}

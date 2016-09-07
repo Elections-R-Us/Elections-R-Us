@@ -1,0 +1,3 @@
+[run]
+source = elections_r_us
+omit = elections_r_us/test*

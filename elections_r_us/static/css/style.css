@@ -1,0 +1,15 @@
+main {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+footer {
+  padding-top: 2em;
+  clear: both;
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 13em;
+  overflow-x: hidden;
+}
