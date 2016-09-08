@@ -1,20 +1,53 @@
 {% extends 'index.jinja2' %}
 {% block body %}
 
-<div class="row">
-  <form class="col-md-12" action="/results_list" method="POST">
-      <div class="row">
-        <div class="input-field col-md-12">
-          <input  name="street" id="street" type="text" class="validate">
-          <label for="street">Street Address</label>
+  <div class="card-panel author-box">
+    <div class="row center-on-small-only">
+      <h5 class="text-center">Register</h5>
+      <hr>
+      <form class="col-md-12" action="#" method="POST">
+
+        <div class="row">
+          <div class="input-field col-md-12">
+            <input id="username" name="username" type="text">
+            <label for="username" data-error="" data-success="">Username</label>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="input-field col-md-4">
-          <input name="city" id="city" type="text" class="validate">
-          <label for="city">City</label>
+
+        <div class="row">
+          <div class="input-field col-md-12">
+            <input id="password" name="password" type="password">
+            <label for="password" data-error="" data-success="">Password</label>
+          </div>
         </div>
-        <div class="dropdown col-md-2">
+
+        <div class="row">
+          <div class="input-field col-md-12">
+            <input id="password" name="password_confirm" type="password">
+            <label for="password" data-error="" data-success="">Confirm password</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col-md-12">
+            <input id="email" name="email" type="email">
+            <label for="email" data-error="" data-success="">Email</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col-md-12">
+            <input  name="street" id="address" type="text">
+            <label for="address">Street Address</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col-md-4">
+            <input name="city" id="city" type="text">
+            <label for="city">City</label>
+          </div>
+
           <div id="statedropdown" class="form-group col-md-4">
             <select name="state" class="form-control input-medium">
               <option value="al">Alabama</option>
@@ -68,14 +101,20 @@
               <option value="wy">Wyoming</option>
             </select>
           </div>
+
+          <div class="input-field col-md-4">
+            <input name="zip" id="zip" type="text">
+            <label for="zip">Zip Code</label>
+          </div>
         </div>
-        <div class="input-field col-md-4">
-          <input name="zip" id="zip" type="text" class="validate">
-          <label for="zip">Zip Code</label>
-        </div>
+
+    <div class="row">
+      <div class="input-field col-md-12">
+        <input class="btn btn-info" type="submit" value="Submit">
       </div>
-      <input type="submit" class="btn btn-info indigo pull-right" value="Submit">
-  </form>
+    </div>
+    </form>
+  </div>
 </div>
 
 {% endblock %}
