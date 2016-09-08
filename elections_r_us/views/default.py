@@ -74,6 +74,11 @@ def home_view(request):
     return {}
 
 
+@view_config(route_name='about_us', renderer='templates/about_us.jinja2')
+def about_view(request):
+    return {}
+
+
 @view_config(route_name='login', renderer="templates/login.jinja2")
 def login_view(request):
     if request.method == 'POST':
