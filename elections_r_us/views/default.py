@@ -201,7 +201,7 @@ def favorite_view(request):
             request.authenticated_userid
         )
         request.dbsession.add(model)
-    return HTTPFound(request.route_path('user_profile'))
+    return HTTPFound('/user_profile')
 
 
 @view_config(route_name='results_list',
