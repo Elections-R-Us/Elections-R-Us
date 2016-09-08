@@ -145,7 +145,6 @@ def test_build_address_has_zip():
     assert '99920' in build_address('a', 'b', 'c', '99920')
 
 
-
 def test_register_view_success(new_session, valid_registration):
     from ..views.default import register_view
     register_results = register_view(dummy_post_request(
@@ -302,3 +301,69 @@ BAD_ADDRESSES = [  # addresses for which the Google API has no info
 def test_consume_api_success(address):
     from ..views.default import get_civic_info
     assert get_civic_info(address)
+
+
+@pytest.fixture
+def favorite_candidate_post_results(session_with_user):
+    from ..views.default import result_list_view
+    from ..models import User
+    session, username, password = session_with_user
+    userid = session.query(User).filter(User.username == username).first().id
+    return session, result_list_view(dummy_post_request(
+        session, {
+            'type': 'general election',
+            'userid': userid,
+            'candidatename': 'Gary Johnson / Bill Weld',
+            'party': 'Libertarian party',
+            'office': 'President/Vice President',
+            'website': 'http://www.johnsonweld.com',
+            'email': 'info@johnsonweld.com',
+            'phone': '801-303-7922'
+        }))
+
+
+def test_favorite_candidate_returns_dict(favorite_candidate_post_results):
+    session, results = favorite_candidate_post_results
+    assert isinstance(results, dict)
+
+
+def test_favorite_candidate_view_stores(favorite_candidate_post_results):
+    from ..models import FavoriteCandidate
+    session, results = favorite_candidate_post_results
+    query = session.query(FavoriteCandidate)
+    assert len(query.all()) == 1
+
+
+@pytest.fixture
+def favorite_referendum_post_results(session_with_user):
+    from ..views.default import result_list_view
+    from ..models import User
+    session, username, password = session_with_user
+    userid = session.query(User).filter(User.username == username).first().id
+    return session, result_list_view(dummy_post_request(
+        session, {
+            'type': 'referendum',
+            'userid': userid,
+            'title': 'Initiative Measure No. 1433',
+            'brief': 'concerns labor standards',
+            'position': 'Yes'
+        }))
+
+
+def test_favorite_referendum_returns_dict(favorite_referendum_post_results):
+    session, results = favorite_referendum_post_results
+    assert isinstance(results, dict)
+
+
+def test_favorite_referendum_view_stores(favorite_referendum_post_results):
+    from ..models import FavoriteReferendum
+    session, results = favorite_referendum_post_results
+    query = session.query(FavoriteReferendum)
+    assert len(query.all()) == 1
+
+
+def test_profile_view_favorite_candidates(favorite_candidate_post_results):
+    from ..views.default import profile_view
+    request = testing.DummyRequest()
+    request.dbsession, _ = favorite_candidate_post_results
+    assert len(profile_view(request)['candidates']) > 0

@@ -8,7 +8,7 @@ from pyramid.security import remember, forget
 from googleapiclient.errors import HttpError
 import googleapiclient.discovery as discovery
 
-from ..models import User
+from ..models import User, FavoriteCandidate, FavoriteReferendum
 from ..security import check_login, create_user, change_password
 from .test_dict import test_dict
 
@@ -163,3 +163,42 @@ def get_civic_info(address):
         return info_query.execute()
     except HttpError:
         return None
+
+
+def post_to_favorite_candidate(post_dict):
+    return FavoriteCandidate(
+        userid=post_dict['userid'],
+        candidatename=post_dict['candidatename'],
+        party=post_dict['party'],
+        office=post_dict['office'],
+        website=post_dict['website'],
+        email=post_dict['email'],
+        phone=post_dict['phone']
+    )
+
+
+def post_to_favorite_referendum(post_dict):
+    return FavoriteReferendum(
+        title=post_dict['title'],
+        brief=post_dict['brief'],
+        position=post_dict['position'],
+        userid=post_dict['userid']
+    )
+
+
+def result_list_view(request):
+    if request.method == 'POST':
+        if request.POST['type'] == 'referendum':
+            model = post_to_favorite_referendum(request.POST)
+        else:
+            model = post_to_favorite_candidate(request.POST)
+        request.dbsession.add(model)
+    return {}
+
+
+def profile_view(request):
+    query = request.dbsession.query(User)
+    user = query.filter(User.username == request.authenticated_userid).first()
+    return {
+        'candidates': user.favoritecandidates
+    }
