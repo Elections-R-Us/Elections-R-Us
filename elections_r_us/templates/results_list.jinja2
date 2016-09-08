@@ -22,7 +22,7 @@
                    <li class="list-type-none">{{ candidates.phone }}</li>
                    <hr />
                    {% if request.authenticated_userid %}
-                   <form class="" action="#" method="post">
+                   <form class="" action="/favorite" method="post">
                      <input type="submit" class="btn btn-info indigo" name="name" value="Add To Favorites">
                      <input type="hidden" name="candidatename" value="{{ candidates.name }}">
                      <input type="hidden" name="office" value="{{ item.office }}">
@@ -58,7 +58,7 @@
                   <li><h6>Referendum Type:</h6>{{ item.type }}</li>
                   <hr>
                   {% if request.authenticated_userid %}
-                  <form class="" action="#" method="post">
+                  <form class="" action="/favorite" method="post">
                     {% for response in item.referendumBallotResponses %}
                     <input type="submit" class="btn btn-info indigo" name="position" value="{{ response }}">
                     {% endfor %}

@@ -2,11 +2,11 @@
 {% block body %}
 
 <div class="row">
-  <form class="col-md-12">
+  <form class="col-md-12" action="/results_list" method="POST">
       <div class="row">
         <div class="input-field col-md-12">
-          <input  name="address" id="address" type="text" class="validate">
-          <label for="address">Street Address</label>
+          <input  name="street" id="street" type="text" class="validate">
+          <label for="street">Street Address</label>
         </div>
       </div>
       <div class="row">
@@ -15,64 +15,66 @@
           <label for="city">City</label>
         </div>
         <div class="dropdown col-md-2">
-          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">State<span class="caret"></span></button>
-          <ul class="dropdown-menu scrollable-menu">
-            <li><a href="#" value="al">Alabama</a></li>
-            <li><a href="#" value="ak">Alaska</a></li>
-            <li><a href="#" value="az">Arizona</a></li>
-            <li><a href="#" value="ar">Arkansas</a></li>
-            <li><a href="#" value="ca">California</a></li>
-            <li><a href="#" value="co">Colorado</a></li>
-            <li><a href="#" value="ct">Connecticut</a></li>
-            <li><a href="#" value="de">Delaware</a></li>
-            <li><a href="#" value="fl">Florida</a></li>
-            <li><a href="#" value="ga">Georgia</a></li>
-            <li><a href="#" value="hi">Hawaii</a></li>
-            <li><a href="#" value="id">Idaho</a></li>
-            <li><a href="#" value="il">Illinois</a></li>
-            <li><a href="#" value="in">Indiana</a></li>
-            <li><a href="#" value="ia">Iowa</a></li>
-            <li><a href="#" value="ks">Kansas</a></li>
-            <li><a href="#" value="ky">Kentucky</a></li>
-            <li><a href="#" value="la">Louisiana</a></li>
-            <li><a href="#" value="me">Maine</a></li>
-            <li><a href="#" value="md">Maryland</a></li>
-            <li><a href="#" value="ma">Massachusetts</a></li>
-            <li><a href="#" value="mi">Michigan</a></li>
-            <li><a href="#" value="mn">Minnesota</a></li>
-            <li><a href="#" value="ms">Mississippi</a></li>
-            <li><a href="#" value="mo">Missouri</a></li>
-            <li><a href="#" value="mt">Montana</a></li>
-            <li><a href="#" value="ne">Nebraska</a></li>
-            <li><a href="#" value="nv">Nevada</a></li>
-            <li><a href="#" value="nh">New Hampshire</a></li>
-            <li><a href="#" value="nj">New Jersey</a></li>
-            <li><a href="#" value="nm">New Mexico</a></li>
-            <li><a href="#" value="ny">New York</a></li>
-            <li><a href="#" value="nc">North Carolina</a></li>
-            <li><a href="#" value="nd">North Dakota</a></li>
-            <li><a href="#" value="oh">Ohio</a></li>
-            <li><a href="#" value="or">Oregon</a></li>
-            <li><a href="#" value="pa">Pennsylvania</a></li>
-            <li><a href="#" value="ri">Rhode Island</a></li>
-            <li><a href="#" value="sc">South Carolina</a></li>
-            <li><a href="#" value="sd">South Dakota</a></li>
-            <li><a href="#" value="tn">Tennessee</a></li>
-            <li><a href="#" value="tx">Texas</a></li>
-            <li><a href="#" value="ut">Utah</a></li>
-            <li><a href="#" value="vt">Vermont</a></li>
-            <li><a href="#" value="va">Virginia</a></li>
-            <li><a href="#" value="wa">Washington</a></li>
-            <li><a href="#" value="wv">West Virginia</a></li>
-            <li><a href="#" value="wi">Wisconsin</a></li>
-            <li><a href="#" value="wy">Wyoming</a></li>
-          </ul>
+          <div id="statedropdown" class="form-group col-md-4">
+            <select name="state" class="form-control input-medium">
+              <option value="al">Alabama</option>
+              <option value="ak">Alaska</option>
+              <option value="az">Arizona</option>
+              <option value="ar">Arkansas</option>
+              <option value="ca">California</option>
+              <option value="co">Colorado</option>
+              <option value="ct">Connecticut</option>
+              <option value="de">Delaware</option>
+              <option value="fl">Florida</option>
+              <option value="ga">Georgia</option>
+              <option value="hi">Hawaii</option>
+              <option value="id">Idaho</option>
+              <option value="il">Illinois</option>
+              <option value="in">Indiana</option>
+              <option value="ia">Iowa</option>
+              <option value="ks">Kansas</option>
+              <option value="ky">Kentucky</option>
+              <option value="la">Louisiana</option>
+              <option value="me">Maine</option>
+              <option value="md">Maryland</option>
+              <option value="ma">Massachusetts</option>
+              <option value="mi">Michigan</option>
+              <option value="mn">Minnesota</option>
+              <option value="ms">Mississippi</option>
+              <option value="mo">Missouri</option>
+              <option value="mt">Montana</option>
+              <option value="ne">Nebraska</option>
+              <option value="nv">Nevada</option>
+              <option value="nh">New Hampshire</option>
+              <option value="nj">New Jersey</option>
+              <option value="nm">New Mexico</option>
+              <option value="ny">New York</option>
+              <option value="nc">North Carolina</option>
+              <option value="nd">North Dakota</option>
+              <option value="oh">Ohio</option>
+              <option value="or">Oregon</option>
+              <option value="pa">Pennsylvania</option>
+              <option value="ri">Rhode Island</option>
+              <option value="sc">South Carolina</option>
+              <option value="sd">South Dakota</option>
+              <option value="tn">Tennessee</option>
+              <option value="tx">Texas</option>
+              <option value="ut">Utah</option>
+              <option value="vt">Vermont</option>
+              <option value="va">Virginia</option>
+              <option value="wa">Washington</option>
+              <option value="wv">West Virginia</option>
+              <option value="wi">Wisconsin</option>
+              <option value="wy">Wyoming</option>
+            </select>
+          </div>
         </div>
         <div class="input-field col-md-4">
-          <input name="zip_code" id="zip_code" type="text" class="validate">
-          <label for="email">Zip Code</label>
+          <input name="zip" id="zip" type="text" class="validate">
+          <label for="zip">Zip Code</label>
         </div>
       </div>
+      <input type="submit" class="btn btn-info indigo pull-right" value="Submit">
   </form>
 </div>
 

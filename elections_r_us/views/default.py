@@ -196,7 +196,7 @@ def favorite_view(request):
     return HTTPFound('/')
 
 
-@view_config(route_name='results_list', renderer='results_list.jinja2')
+@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
 def result_list_view(request):
     if request.method == "POST":
         address = build_address(
@@ -215,3 +215,8 @@ def profile_view(request):
     return {
         'candidates': user.favoritecandidates
     }
+
+
+@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
+def address_entry_view(request):
+    return {}
