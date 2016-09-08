@@ -119,6 +119,7 @@ def register_view(request):
         try:
             verify_registration(credentials)
         except BadLoginInfo as bad:
+            print(failure_info(bad.info))
             return failure_info(bad.info)
         create_user(request.dbsession, UserInfo(
             username=credentials.username,
@@ -219,7 +220,7 @@ def result_list_view(request):
                 request.POST['state'],
                 request.POST['zip']
             )
-        return get_civic_info(address)
+        return get_civic_info(address) or {}
     return {}
 
 
