@@ -1,3 +1,5 @@
+"""Security-related functionality."""
+
 import os
 
 from pyramid.authentication import AuthTktAuthenticationPolicy
@@ -34,6 +36,7 @@ def create_user(session, info):
 
 
 def change_password(session, username, new_password):
+    """Change the password of username to new_password."""
     user = session.query(User).filter(User.username == username).first()
     user.password = pwd_context.encrypt(new_password)
 
@@ -50,6 +53,7 @@ def check_login(session, username, password):
 
 
 def includeme(config):
+    """Authentication and authorization configuration."""
     auth_secret = os.environ.get('AUTH_SECRET', 'secret authentication secret')
     authn_policy = AuthTktAuthenticationPolicy(
         secret=auth_secret,
