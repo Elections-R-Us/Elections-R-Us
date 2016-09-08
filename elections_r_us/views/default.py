@@ -186,15 +186,13 @@ def post_to_favorite_referendum(post_dict):
     )
 
 
-def favorite_candidate_view(request):
+def result_list_view(request):
     if request.method == 'POST':
-        request.dbsession.add(post_to_favorite_candidate(request.POST))
-    return {}
-
-
-def favorite_referendum_view(request):
-    if request.method == 'POST':
-        request.dbsession.add(post_to_favorite_referendum(request.POST))
+        if request.POST['type'] == 'referendum':
+            model = post_to_favorite_referendum(request.POST)
+        else:
+            model = post_to_favorite_candidate(request.POST)
+        request.dbsession.add(model)
     return {}
 
 

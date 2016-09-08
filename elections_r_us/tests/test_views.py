@@ -305,12 +305,13 @@ def test_consume_api_success(address):
 
 @pytest.fixture
 def favorite_candidate_post_results(session_with_user):
-    from ..views.default import favorite_candidate_view
+    from ..views.default import result_list_view
     from ..models import User
     session, username, password = session_with_user
     userid = session.query(User).filter(User.username == username).first().id
-    return session, favorite_candidate_view(dummy_post_request(
+    return session, result_list_view(dummy_post_request(
         session, {
+            'type': 'general election',
             'userid': userid,
             'candidatename': 'Gary Johnson / Bill Weld',
             'party': 'Libertarian party',
@@ -335,12 +336,13 @@ def test_favorite_candidate_view_stores(favorite_candidate_post_results):
 
 @pytest.fixture
 def favorite_referendum_post_results(session_with_user):
-    from ..views.default import favorite_referendum_view
+    from ..views.default import result_list_view
     from ..models import User
     session, username, password = session_with_user
     userid = session.query(User).filter(User.username == username).first().id
-    return session, favorite_referendum_view(dummy_post_request(
+    return session, result_list_view(dummy_post_request(
         session, {
+            'type': 'referendum',
             'userid': userid,
             'title': 'Initiative Measure No. 1433',
             'brief': 'concerns labor standards',
