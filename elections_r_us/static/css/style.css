@@ -44,3 +44,7 @@ div.author-box {
 h6 {
   font-size: 1.25em;
 }
+
+.clear {
+  clear: both;
+}
