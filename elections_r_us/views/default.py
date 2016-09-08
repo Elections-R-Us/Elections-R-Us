@@ -8,7 +8,7 @@ from pyramid.security import remember, forget
 from googleapiclient.errors import HttpError
 import googleapiclient.discovery as discovery
 
-from ..models import User
+from ..models import User, FavoriteCandidate, FavoriteReferendum
 from ..security import check_login, create_user, change_password
 from .test_dict import test_dict
 
@@ -168,3 +168,60 @@ def get_civic_info(address):
         return info_query.execute()
     except HttpError:
         return None
+
+
+def post_to_favorite_candidate(post_dict):
+    return FavoriteCandidate(
+        candidatename=post_dict['candidatename'],
+        office=post_dict['office']
+    )
+
+
+def post_to_favorite_referendum(post_dict):
+    return FavoriteReferendum(
+        title=post_dict['title'],
+        brief=post_dict['brief'],
+        position=post_dict['position'],
+    )
+
+
+def get_userid_from_name(session, username):
+    return session.query(User).filter(User.username == username).first().id
+
+
+@view_config(route_name='favorite')
+def favorite_view(request):
+    if request.method == 'POST':
+        if request.POST['type'] == 'referendum':
+            model = post_to_favorite_referendum(request.POST)
+        else:
+            model = post_to_favorite_candidate(request.POST)
+        model.userid = get_userid_from_name(request.dbsession, request.authenticated_userid)
+        request.dbsession.add(model)
+    return HTTPFound('/')
+
+
+@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
+def result_list_view(request):
+    if request.method == "POST":
+        address = build_address(
+            request.POST['street'],
+            request.POST['city'],
+            request.POST['state'],
+            request.POST['zip']
+        )
+        return get_civic_info(address)
+    return {}
+
+
+def profile_view(request):
+    query = request.dbsession.query(User)
+    user = query.filter(User.username == request.authenticated_userid).first()
+    return {
+        'candidates': user.favoritecandidates
+    }
+
+
+@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
+def address_entry_view(request):
+    return {}

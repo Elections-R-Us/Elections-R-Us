@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 import pytest
 
-from ..models import User, FavoriteCandidate
+from ..models import User, FavoriteCandidate, FavoriteReferendum
 
 
 @pytest.fixture
@@ -62,20 +62,17 @@ def test_user_stores_email(new_session, example_user):
     new_session.flush()
     assert new_session.query(User).first().email == info['email']
 
+
 def make_test_candidate(userid):
     return FavoriteCandidate(
         userid=userid,
         candidatename='Gary Johnson / Bill Weld',
-        party='Libertarian party',
         office='President/Vice President',
-        website='http://www.johnsonweld.com',
-        email='info@johnsonweld.com',
-        phone='801-303-7922'
     )
 
 
 FAVORITE_CANDIDATE_FIELDS = [
-    'userid', 'candidatename', 'party', 'office', 'website', 'email', 'phone'
+    'candidatename', 'office',
 ]
 
 
@@ -89,3 +86,45 @@ def test_candidate_stores_field(session_with_user, field):
     session.flush()
     stored_model = session.query(FavoriteCandidate).first()
     assert getattr(stored_model, field) == getattr(test_candidate, field)
+
+
+def test_favoriting_candidate_without_existent_user(new_session):
+    """Test the database rejects favoriting a candidate without a user."""
+    from sqlalchemy.exc import IntegrityError
+    new_session.add(make_test_candidate(666))
+    with pytest.raises(IntegrityError):
+        new_session.flush()
+
+
+def make_test_referendum(userid):
+    return FavoriteReferendum(
+        userid=userid,
+        title='Initiative Measure No. 1433',
+        brief='concerns labor standards',
+        position='Yes',
+    )
+
+
+FAVORITE_REFERENDUM_FIELDS = [
+    'title', 'brief', 'position'
+]
+
+
+@pytest.mark.parametrize('field', FAVORITE_REFERENDUM_FIELDS)
+def test_referendum_stores_field(session_with_user, field):
+    """Test candidate gets added to a user's favorites."""
+    session, username, password = session_with_user
+    userid = session.query(User).filter(User.username == username).first().id
+    test_referendum = make_test_referendum(userid)
+    session.add(test_referendum)
+    session.flush()
+    stored_model = session.query(FavoriteReferendum).first()
+    assert getattr(stored_model, field) == getattr(test_referendum, field)
+
+
+def test_favoriting_referendum_without_existent_user(new_session):
+    """Test the database rejects favoriting a candidate without a user."""
+    from sqlalchemy.exc import IntegrityError
+    new_session.add(make_test_referendum(666))
+    with pytest.raises(IntegrityError):
+        new_session.flush()

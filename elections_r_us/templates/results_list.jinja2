@@ -1,22 +1,79 @@
-{% extends "index.jinja2" %}
-{% block body %}
-{% if contests %}
-  {% for item in contests %}
-  {% if 'general election' in item.type %}
-    <div class="collection z-depth-2">
-      <a class="collection-item indigo"><h4 class="white-text">{{ item.office }}</h4></a>
-      {% for name in contests.candidates %}
-      <a href="#!" class="collection-item">{{ name.candidates.name }}</a>
-      {% endfor %}
-    </div>
-  {% endif %}
-  {% if 'referendum' in item.type %}
-    <div class="collection z-depth-2">
-      <a class="collection-item indigo"><h4 class="white-text">{{ item.referendumTitle }}</h4></a>
-      <a href="#!" class="collection-item"></a>
-    </div>
-  {% endif %}
-  {% endfor %}
-{% endif %}
+  {% extends "index.jinja2" %}
 
-{% endblock %}
+  {% block body %}
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-primary">
+        <div class="panel-heading indigo">Candidates</div>
+  {% if contests %}
+      {% for item in contests if not item.type['referendum']%}
+        {% if 'candidates' in item %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title"><a data-toggle="collapse"  href="#collapse{{ loop.index }}">{{ item.office }}</a></h4>
+            </div>
+            <div id="collapse{{ loop.index }}" class="panel-collapse collapse">
+            {% for candidates in item.candidates %}
+              <div class="panel-body">
+                <ul>
+                   <li><h6>{{ candidates.name }}</h6></li>
+                   <li class="list-type-none">{{ candidates.party }}</li>
+                   <li class="list-type-none">{{ candidates.candidateUrl }}</li>
+                   <li class="list-type-none">{{ candidates.email }}</li>
+                   <li class="list-type-none">{{ candidates.phone }}</li>
+                   <hr />
+                   {% if request.authenticated_userid %}
+                   <form class="" action="/favorite" method="post">
+                     <input type="submit" class="btn btn-info indigo" name="name" value="Add To Favorites">
+                     <input type="hidden" name="candidatename" value="{{ candidates.name }}">
+                     <input type="hidden" name="office" value="{{ item.office }}">
+                     <input type="hidden" name="type" value="general_election">
+                  </form>
+                  {% endif %}
+                </ul>
+              </div>
+            {% endfor %}
+          </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-primary">
+        <div class="panel-heading indigo">Referendums</div>
+    {% if contests %}
+      {% for item in contests %}
+        {% if 'referendum' in item.type %}
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title"><a data-toggle="collapse"  href="#collapse{{ loop.index }}">{{ item.referendumTitle }}</a></h4>
+            </div>
+            <div id="collapse{{ loop.index }}" class="panel-collapse collapse">
+              <div class="panel-body">
+                <ul>
+                  <li><h6>Brief:</h6>{{ item.referendumBrief }}</li>
+                  <li><h6>Text:</h6>{{ item.referendumText }}</li>
+                  <li class="list-type-none"><h6>Pro Statement:</h6>{{ item.referendumProStatement }}</li>
+                  <li class="list-type-none"><h6>Con Statement:</h6>{{ item.referendumConStatement }}</li>
+                  <li><h6>Referendum Type:</h6>{{ item.type }}</li>
+                  <hr>
+                  {% if request.authenticated_userid %}
+                  <form class="" action="/favorite" method="post">
+                    {% for response in item.referendumBallotResponses %}
+                    <input type="submit" class="btn btn-info indigo" name="position" value="{{ response }}">
+                    {% endfor %}
+                    <input type="hidden" name="title" value="{{ item.referendumTitle }}">
+                    <input type="hidden" name="brief" value="{{ item.referendumBrief }}">
+                    <input type="hidden" name="type" value="referendum">
+                 </form>
+                 {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {% endblock %}

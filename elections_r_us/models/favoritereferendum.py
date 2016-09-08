@@ -10,10 +10,10 @@ from sqlalchemy import (
 from .meta import Base
 
 
-class FavoriteCandidate(Base):
-    __tablename__ = 'favoritecandidates'
+class FavoriteReferendum(Base):
+    __tablename__ = 'favoritereferendums'
     id = Column(Integer, primary_key=True)
-    candidatename = Column(UnicodeText)
-    office = Column(UnicodeText)
-    
+    title =  Column(UnicodeText)
+    brief = Column(UnicodeText)
+    position = Column(UnicodeText)
     userid = Column(Integer, ForeignKey('users.id'))

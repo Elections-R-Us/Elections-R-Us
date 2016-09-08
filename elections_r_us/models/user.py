@@ -6,6 +6,8 @@ from sqlalchemy import (
     UnicodeText,
 )
 
+from sqlalchemy.orm import relationship
+
 from .meta import Base
 
 
@@ -16,6 +18,7 @@ class User(Base):
     email = Column(UnicodeText)
     address = Column(UnicodeText)
     password = Column(Text)
+    favoritecandidates = relationship('FavoriteCandidate')
 
 
 Index('my_index', User.username, unique=True, mysql_length=255)
