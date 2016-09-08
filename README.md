@@ -1,18 +1,28 @@
 # Elections-R-Us
-## Week 5 project for Code Fellows Seattle PY 401
+____  
+## Week 5 Project September 2016
+## Code Fellows Seattle Python 401
 
 
-Elections-R-Us is a portal for voters looking for more information on prospective candidates up for election.
-Elections-R-Us will serve information to voters based on their geographical location. It will present voters
-with candidates based on their geographical location and their voting history where applicable. It will pull
-from a wide variety of publicly available sources.
+Elections-R-Us is a portal for Washington State voters seeking more information on candidates and referendums being considered for the upcoming election. Employing the Google Civic Information API,  Elections-R-Us delivers information to voters based on their entered address. The application provides secure registration and log-in allowing storage and retrieval of voting preferences. 
 
-
-## Team Members:
-- Jeffrey Russell
-- Crystal Lessor
+## Team Members
 - Justin Lange
+- Crystal Lessor
+- Jeffery Russell
 - Jeff Torres
+
+## Deployment on Heroku
+
+http://elections-r-us.herokuapp.com/
+
+## Technologies
+- Python 3.5
+- Pyramid
+- Jinja2
+- Material Design Bootstrap 3
+- SQLAlchemy
+
 
 ## Setup
 1. Clone this repo
