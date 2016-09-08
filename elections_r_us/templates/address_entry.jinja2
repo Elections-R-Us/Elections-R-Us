@@ -1,7 +1,7 @@
 {% extends 'index.jinja2' %}
 {% block body %}
 
-<div class="row"
+<div class="row">
   {% if request.authenticated_userid %}
     <form action="results_list" method="POST">
       <input name="address" type="hidden" value="{{ address }}">
