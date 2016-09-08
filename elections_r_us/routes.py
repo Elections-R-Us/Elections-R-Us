@@ -13,4 +13,5 @@ def includeme(config):
     config.add_route('logout', '/logout')
     config.add_route('register', '/register')
     config.add_route('change_password', '/change_password')
+    config.add_route('about_us', '/about_us')
     config.add_route('favorite', '/favorite')
