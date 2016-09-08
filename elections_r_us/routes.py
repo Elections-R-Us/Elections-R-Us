@@ -1,8 +1,11 @@
+"""Routes for this website."""
+
+
 def includeme(config):
+    """Routes for this website."""
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
     config.add_route('results_list', '/results_list')
-    config.add_route('address_entry', '/address_entry')
     config.add_route('candidate_cards', '/candidate_cards')
     config.add_route('detail', '/detail')
     config.add_route('user_profile', '/user_profile')

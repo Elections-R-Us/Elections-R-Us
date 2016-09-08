@@ -1,3 +1,5 @@
+"""Tests for views."""
+
 from __future__ import unicode_literals
 import pytest
 from pyramid.httpexceptions import HTTPFound
@@ -42,12 +44,14 @@ UNMATCHED_PASSWORDS = [
 
 
 def test_valid_registration(valid_registration):
+    """Test that verify_registration returns positive with good info."""
     from ..views.default import verify_registration
     assert verify_registration(valid_registration)
 
 
 @pytest.mark.parametrize('username', BAD_USERNAMES)
 def test_bad_username(username, valid_registration):
+    """Test that verify_registration rejects a bad username."""
     from ..views.default import verify_registration, BadLoginInfo
     with pytest.raises(BadLoginInfo):
         verify_registration(valid_registration._replace(username=username))
@@ -55,6 +59,7 @@ def test_bad_username(username, valid_registration):
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
 def test_bad_password(password, valid_registration):
+    """Test that verify_registration rejects a bad password."""
     from ..views.default import verify_registration, BadLoginInfo
     valid_registration = valid_registration._replace(
         password=password,
@@ -66,6 +71,7 @@ def test_bad_password(password, valid_registration):
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
 def test_unmatched_password(p1, p2, valid_registration):
+    """Test that verify_registration rejects unmatched passwords."""
     from ..views.default import verify_registration, BadLoginInfo
     valid_registration = valid_registration._replace(
         password=p1,
@@ -75,25 +81,15 @@ def test_unmatched_password(p1, p2, valid_registration):
         verify_registration(valid_registration)
 
 
-def test_existent_user(session_with_user):
-    from ..views.default import user_exists
-    session, username, password = session_with_user
-    assert user_exists(session, username)
-
-
-def test_nonexistent_user(new_session):
-    from ..views.default import user_exists
-    username = 'username'
-    assert not user_exists(new_session, username)
-
-
 def dummy_post_request(new_session, params):
+    """Dummy post request creator for tests."""
     dummy = testing.DummyRequest(post=params)
     dummy.dbsession = new_session
     return dummy
 
 
 def test_login_view_success(session_with_user):
+    """Test login view succeeds redirects."""
     from ..views.default import login_view
     session, username, password = session_with_user
     login_results = login_view(dummy_post_request(session, {
@@ -103,16 +99,32 @@ def test_login_view_success(session_with_user):
     assert isinstance(login_results, HTTPFound)
 
 
-def test_login_view_failure(new_session):
-    from ..views.default import login_view
-    login_results = login_view(dummy_post_request(new_session, {
-        'username': 'username',
-        'password': 'password'
-    }))
-    assert login_results['failure'] == 'login_failure'
+def test_build_address_has_street():
+    """Test that build_address retains the street parameter."""
+    from ..views.default import build_address
+    assert 'street' in build_address('street', 'b', 'c', 'd')
+
+
+def test_build_address_has_city():
+    """Test that build_address retains the city parameter."""
+    from ..views.default import build_address
+    assert 'city' in build_address('a', 'city', 'c', 'd')
+
+
+def test_build_address_has_state():
+    """Test that build_address retains the state parameter."""
+    from ..views.default import build_address
+    assert 'state' in build_address('a', 'c', 'state', 'd')
+
+
+def test_build_address_has_zip():
+    """Test that build_address retains the zip parameter."""
+    from ..views.default import build_address
+    assert '99920' in build_address('a', 'b', 'c', '99920')
 
 
 def registration_input_to_dict(registration_input):
+    """Helper function for creating POSTs to register_view."""
     return {
         'username': registration_input.username,
         'password': registration_input.password,
@@ -125,27 +137,8 @@ def registration_input_to_dict(registration_input):
     }
 
 
-def test_build_address_has_street():
-    from ..views.default import build_address
-    assert 'street' in build_address('street', 'b', 'c', 'd')
-
-
-def test_build_address_has_city():
-    from ..views.default import build_address
-    assert 'city' in build_address('a', 'city', 'c', 'd')
-
-
-def test_build_address_has_state():
-    from ..views.default import build_address
-    assert 'state' in build_address('a', 'c', 'state', 'd')
-
-
-def test_build_address_has_zip():
-    from ..views.default import build_address
-    assert '99920' in build_address('a', 'b', 'c', '99920')
-
-
 def test_register_view_success(new_session, valid_registration):
+    """Test that register view success redirects."""
     from ..views.default import register_view
     register_results = register_view(dummy_post_request(
         new_session, registration_input_to_dict(valid_registration)
@@ -154,6 +147,7 @@ def test_register_view_success(new_session, valid_registration):
 
 
 def test_register_view_success_creates_user(new_session, valid_registration):
+    """Test that register_view creates a user when successful."""
     from ..views.default import register_view
     from ..models import User
     register_view(dummy_post_request(
@@ -165,6 +159,7 @@ def test_register_view_success_creates_user(new_session, valid_registration):
 
 @pytest.mark.parametrize('username', BAD_USERNAMES)
 def test_register_view_bad_username(new_session, username, valid_registration):
+    """Test that register_view reports bad usernames."""
     from ..views.default import register_view
     registration_input = valid_registration._replace(username=username)
     register_results = register_view(dummy_post_request(
@@ -175,6 +170,7 @@ def test_register_view_bad_username(new_session, username, valid_registration):
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
 def test_register_view_bad_password(new_session, password, valid_registration):
+    """Test that register_view reports bad passwords."""
     from ..views.default import register_view
     registration_input = valid_registration._replace(
         password=password,
@@ -188,6 +184,7 @@ def test_register_view_bad_password(new_session, password, valid_registration):
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
 def test_register_view_unmatched_pass(new_session, p1, p2, valid_registration):
+    """Test that register_view reports unmatched passwords."""
     from ..views.default import register_view
     registration_input = valid_registration._replace(
         password=p1,
@@ -201,6 +198,7 @@ def test_register_view_unmatched_pass(new_session, p1, p2, valid_registration):
 
 @pytest.mark.parametrize('new_password', VALID_PASSWORDS)
 def test_password_change_success(session_with_user, new_password):
+    """Test that password_change_view shows success."""
     from ..views.default import password_change_view
     session, username, old_password = session_with_user
     result = password_change_view(dummy_post_request(session, {
@@ -213,6 +211,7 @@ def test_password_change_success(session_with_user, new_password):
 
 @pytest.mark.parametrize('new_password', VALID_PASSWORDS)
 def test_password_change_updates_password(session_with_user, new_password):
+    """Test that password_change_view changes the password."""
     from ..views.default import password_change_view
     from ..security import pwd_context
     from ..models import User
@@ -230,6 +229,7 @@ def test_password_change_updates_password(session_with_user, new_password):
 
 @pytest.mark.parametrize('new_password', BAD_PASSWORDS)
 def test_password_change_bad_password(session_with_user, new_password):
+    """Test that password_change_view rejects a bad password."""
     from ..views.default import password_change_view
     session, username, old_password = session_with_user
     response = password_change_view(dummy_post_request(session, {
@@ -242,6 +242,7 @@ def test_password_change_bad_password(session_with_user, new_password):
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
 def test_password_change_unmatched_password(session_with_user, p1, p2):
+    """Test that password_change_view rejects a unmatched passwords."""
     from ..views.default import password_change_view
     session, username, old_password = session_with_user
     request = dummy_post_request(session, {
@@ -254,6 +255,7 @@ def test_password_change_unmatched_password(session_with_user, p1, p2):
 
 
 def test_password_change_failed_login(session_with_user):
+    """Test that password_change_view rejects without correct old password."""
     from ..views.default import password_change_view
     session, username, old_password = session_with_user
     new_password = 'good password'
@@ -263,17 +265,19 @@ def test_password_change_failed_login(session_with_user):
         'password_confirm': new_password
     })
     response = password_change_view(request)
-    assert response['failure'] == 'failed login'
+    assert response['failure'] == 'login_failure'
 
 
 @pytest.mark.parametrize('password', VALID_PASSWORDS)
 def test_password_verify_success(password):
+    """Test verify password returns True for valid passwords."""
     from ..views.default import verify_password
     assert verify_password(password, password)
 
 
 @pytest.mark.parametrize('password', BAD_PASSWORDS)
 def test_password_verify_bad(password):
+    """Test verify password returns False for bad passwords."""
     from ..views.default import verify_password, BadLoginInfo
     with pytest.raises(BadLoginInfo):
         verify_password(password, password)
@@ -281,6 +285,7 @@ def test_password_verify_bad(password):
 
 @pytest.mark.parametrize('p1, p2', UNMATCHED_PASSWORDS)
 def test_password_verify_unmatched(p1, p2):
+    """Test verify password returns False for unmatched passwords."""
     from ..views.default import verify_password, BadLoginInfo
     with pytest.raises(BadLoginInfo):
         verify_password(p1, p2)
@@ -299,12 +304,14 @@ BAD_ADDRESSES = [  # addresses for which the Google API has no info
 
 @pytest.mark.parametrize('address', ADDRESSES)
 def test_consume_api_success(address):
+    """Test that the API returns information for addresses."""
     from ..views.default import get_civic_info
     assert get_civic_info(address)
 
 
 @pytest.fixture
 def favorite_candidate_post_results(session_with_user):
+    """Test that the API returns information for addresses."""
     from ..views.default import favorite_view
     session, username, password = session_with_user
     return session, favorite_view(dummy_post_request(
@@ -316,11 +323,13 @@ def favorite_candidate_post_results(session_with_user):
 
 
 def test_favorite_candidate_returns_dict(favorite_candidate_post_results):
+    """Test that the API returns information for addresses."""
     session, results = favorite_candidate_post_results
     assert isinstance(results, HTTPFound)
 
 
 def test_favorite_candidate_view_stores(favorite_candidate_post_results):
+    """Test that favoriting candidates stores them."""
     from ..models import FavoriteCandidate
     session, results = favorite_candidate_post_results
     query = session.query(FavoriteCandidate)
@@ -329,6 +338,7 @@ def test_favorite_candidate_view_stores(favorite_candidate_post_results):
 
 @pytest.fixture
 def favorite_referendum_post_results(session_with_user):
+    """Fixture for a user with a favorited referendum"""
     from ..views.default import favorite_view
     session, username, password = session_with_user
     return session, favorite_view(dummy_post_request(
@@ -340,12 +350,14 @@ def favorite_referendum_post_results(session_with_user):
         }))
 
 
-def test_favorite_referendum_returns_dict(favorite_referendum_post_results):
+def test_favorite_referendum_redirects(favorite_referendum_post_results):
+    """Fixture for a user with a favorited referendum"""
     session, results = favorite_referendum_post_results
     assert isinstance(results, HTTPFound)
 
 
 def test_favorite_referendum_view_stores(favorite_referendum_post_results):
+    """Test that favoriting referendum stores it."""
     from ..models import FavoriteReferendum
     session, results = favorite_referendum_post_results
     query = session.query(FavoriteReferendum)
@@ -353,7 +365,16 @@ def test_favorite_referendum_view_stores(favorite_referendum_post_results):
 
 
 def test_profile_view_favorite_candidates(favorite_candidate_post_results):
+    """Test that profile view gives favorited candidates."""
     from ..views.default import profile_view
     request = testing.DummyRequest()
     request.dbsession, _ = favorite_candidate_post_results
     assert len(profile_view(request)['candidates']) > 0
+
+
+def test_home_view_logged_in_address(session_with_user):
+    """Test that profile view gives candidates."""
+    from ..views.default import home_view
+    request = testing.DummyRequest()
+    request.dbsession, _, _ = session_with_user
+    assert 'address' in home_view(request)

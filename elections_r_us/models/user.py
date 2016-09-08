@@ -1,3 +1,5 @@
+"""Define a model for user accounts."""
+
 from sqlalchemy import (
     Column,
     Index,
@@ -12,6 +14,7 @@ from .meta import Base
 
 
 class User(Base):
+    """Define a model for user accounts."""
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(UnicodeText)
@@ -19,6 +22,7 @@ class User(Base):
     address = Column(UnicodeText)
     password = Column(Text)
     favoritecandidates = relationship('FavoriteCandidate')
+    favoritereferendums = relationship('FavoriteReferendum')
 
 
 Index('my_index', User.username, unique=True, mysql_length=255)

@@ -2,6 +2,16 @@
 {% block body %}
 
 <div class="row">
+  {% if request.authenticated_userid %}
+    <form action="results_list" method="POST">
+      <input name="address" type="hidden" value="{{ address }}">
+      <input type="submit" class="btn btn-info indigo pull-right" value="Look up your address">
+    </form>
+  {% endif %}
+</div>
+
+
+<div class="row">
   <form class="col-md-12" action="/results_list" method="POST">
       <div class="row">
         <div class="input-field col-md-12">
