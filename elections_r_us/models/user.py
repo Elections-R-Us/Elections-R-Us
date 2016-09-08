@@ -1,3 +1,5 @@
+"""Define a model for user accounts."""
+
 from sqlalchemy import (
     Column,
     Index,
@@ -12,6 +14,7 @@ from .meta import Base
 
 
 class User(Base):
+    """Define a model for user accounts."""
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(UnicodeText)

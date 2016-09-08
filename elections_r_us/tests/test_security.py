@@ -1,3 +1,5 @@
+"""Tests for security.py"""
+
 from __future__ import unicode_literals
 
 from ..models import User
@@ -30,6 +32,7 @@ def test_bad_password_login_fails(session_with_user):
 
 
 def test_change_password(session_with_user):
+    """Test changing a password for a user."""
     from ..security import check_login, change_password
     session, username, password = session_with_user
     new_password = password + '!'
@@ -38,6 +41,7 @@ def test_change_password(session_with_user):
 
 
 def test_change_password_new_overwrites(session_with_user):
+    """Test that one can't use an old password after changing."""
     from ..security import check_login, change_password
     session, username, password = session_with_user
     new_password = password + '!'

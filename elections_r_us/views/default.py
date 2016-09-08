@@ -64,11 +64,6 @@ def verify_registration(inp):
     return verify_password(inp.password, inp.password_confirm)
 
 
-def user_exists(session, username):
-    query = session.query(User).filter(User.username == username).all()
-    return len(query) > 0
-
-
 @view_config(route_name='home', renderer='templates/address_entry.jinja2')
 def home_view(request):
     username = request.authenticated_userid
@@ -119,7 +114,6 @@ def register_view(request):
         try:
             verify_registration(credentials)
         except BadLoginInfo as bad:
-            print(failure_info(bad.info))
             return failure_info(bad.info)
         create_user(request.dbsession, UserInfo(
             username=credentials.username,
