@@ -11,6 +11,9 @@
           <div class="input-field col-md-12">
             <input id="username" name="username" type="text">
             <label for="username" data-error="" data-success="">Username</label>
+            {% if failure == 'bad username' %}
+              <strong>Username must contain only alphanumeric characters and underscores.</strong>
+            {% endif %}
           </div>
         </div>
 
@@ -18,6 +21,9 @@
           <div class="input-field col-md-12">
             <input id="password" name="password" type="password">
             <label for="password" data-error="" data-success="">Password</label>
+            {% if failure == 'bad password' %}
+              <strong>Password must be at least 6 characters.</strong>
+            {% endif %}
           </div>
         </div>
 

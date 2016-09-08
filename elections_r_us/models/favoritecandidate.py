@@ -1,8 +1,6 @@
 from sqlalchemy import (
     Column,
-    Index,
     Integer,
-    Text,
     UnicodeText,
     ForeignKey
 )
@@ -15,5 +13,4 @@ class FavoriteCandidate(Base):
     id = Column(Integer, primary_key=True)
     candidatename = Column(UnicodeText)
     office = Column(UnicodeText)
-    
     userid = Column(Integer, ForeignKey('users.id'))
