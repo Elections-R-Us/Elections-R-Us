@@ -72,12 +72,10 @@ def user_exists(session, username):
 @view_config(route_name='home', renderer='templates/address_entry.jinja2')
 def home_view(request):
     username = request.authenticated_userid
-    if username:
+    if request.authenticated_userid:
         query = request.dbsession.query(User)
-        if request.authenticated_userid:
-            return {
-                'address': query.filter(User.username == username).first().address
-            }
+        address = query.filter(User.username == username).first().address
+        return {'address': address}
     return {}
 
 
@@ -203,7 +201,7 @@ def favorite_view(request):
             request.authenticated_userid
         )
         request.dbsession.add(model)
-    return HTTPFound('/')
+    return HTTPFound(request.route_path('user_profile'))
 
 
 @view_config(route_name='results_list',
