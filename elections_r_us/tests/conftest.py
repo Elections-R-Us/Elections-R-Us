@@ -6,6 +6,9 @@ import transaction
 from pyramid import testing
 from ..security import pwd_context
 from ..views.default import UserInfo, RegistrationInput
+from webtest import TestApp as _TestApp
+from .. import main
+
 
 from ..models import (
     get_engine,
@@ -14,6 +17,13 @@ from ..models import (
     User
 )
 from ..models.meta import Base
+
+
+@pytest.fixture(scope="function")
+def app():
+    my_app = main({})
+    app = _TestApp(my_app)
+    return app
 
 
 @pytest.fixture(scope="session")
