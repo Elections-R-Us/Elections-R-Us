@@ -81,6 +81,8 @@ def home_view(request):
 
 @view_config(route_name='login', renderer="templates/login.jinja2")
 def login_view(request):
+    if request.authenticated_userid:
+        return HTTPFound('/')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -148,7 +150,7 @@ def password_change_view(request):
         except BadLoginInfo as bad:
             return failure_info(bad.info)
         if not check_login(request.dbsession, username, old_password):
-            return failure_info('failed login')
+            return failure_info('login_failure')
         change_password(request.dbsession, username, new_password)
         return {'password_changed': True}
     return {}
