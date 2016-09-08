@@ -193,7 +193,7 @@ def result_list_view(request):
             model = post_to_favorite_candidate(request.POST)
         model.userid = get_userid_from_name(request.dbsession, request.authenticated_userid)
         request.dbsession.add(model)
-    return {}
+    return test_dict
 
 
 def profile_view(request):

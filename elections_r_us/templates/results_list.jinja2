@@ -60,10 +60,10 @@
                   {% if request.authenticated_userid %}
                   <form class="" action="#" method="post">
                     {% for response in item.referendumBallotResponses %}
-                    <input type="submit" class="btn btn-info indigo" name="name" value="{{ response }}">
+                    <input type="submit" class="btn btn-info indigo" name="position" value="{{ response }}">
                     {% endfor %}
                     <input type="hidden" name="title" value="{{ item.referendumTitle }}">
-                    <input type="hidden" name="brief" value="{{ item.brief }}">
+                    <input type="hidden" name="brief" value="{{ item.referendumBrief }}">
                     <input type="hidden" name="type" value="referendum">
                  </form>
                  {% endif %}
