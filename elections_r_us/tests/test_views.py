@@ -305,26 +305,19 @@ def test_consume_api_success(address):
 
 @pytest.fixture
 def favorite_candidate_post_results(session_with_user):
-    from ..views.default import result_list_view
-    from ..models import User
+    from ..views.default import favorite_view
     session, username, password = session_with_user
-    userid = session.query(User).filter(User.username == username).first().id
-    return session, result_list_view(dummy_post_request(
+    return session, favorite_view(dummy_post_request(
         session, {
             'type': 'general election',
-            'userid': userid,
             'candidatename': 'Gary Johnson / Bill Weld',
-            'party': 'Libertarian party',
             'office': 'President/Vice President',
-            'website': 'http://www.johnsonweld.com',
-            'email': 'info@johnsonweld.com',
-            'phone': '801-303-7922'
         }))
 
 
 def test_favorite_candidate_returns_dict(favorite_candidate_post_results):
     session, results = favorite_candidate_post_results
-    assert isinstance(results, dict)
+    assert isinstance(results, HTTPFound)
 
 
 def test_favorite_candidate_view_stores(favorite_candidate_post_results):
@@ -336,14 +329,11 @@ def test_favorite_candidate_view_stores(favorite_candidate_post_results):
 
 @pytest.fixture
 def favorite_referendum_post_results(session_with_user):
-    from ..views.default import result_list_view
-    from ..models import User
+    from ..views.default import favorite_view
     session, username, password = session_with_user
-    userid = session.query(User).filter(User.username == username).first().id
-    return session, result_list_view(dummy_post_request(
+    return session, favorite_view(dummy_post_request(
         session, {
             'type': 'referendum',
-            'userid': userid,
             'title': 'Initiative Measure No. 1433',
             'brief': 'concerns labor standards',
             'position': 'Yes'
@@ -352,7 +342,7 @@ def favorite_referendum_post_results(session_with_user):
 
 def test_favorite_referendum_returns_dict(favorite_referendum_post_results):
     session, results = favorite_referendum_post_results
-    assert isinstance(results, dict)
+    assert isinstance(results, HTTPFound)
 
 
 def test_favorite_referendum_view_stores(favorite_referendum_post_results):

@@ -167,13 +167,8 @@ def get_civic_info(address):
 
 def post_to_favorite_candidate(post_dict):
     return FavoriteCandidate(
-        userid=post_dict['userid'],
         candidatename=post_dict['candidatename'],
-        party=post_dict['party'],
-        office=post_dict['office'],
-        website=post_dict['website'],
-        email=post_dict['email'],
-        phone=post_dict['phone']
+        office=post_dict['office']
     )
 
 
@@ -182,17 +177,35 @@ def post_to_favorite_referendum(post_dict):
         title=post_dict['title'],
         brief=post_dict['brief'],
         position=post_dict['position'],
-        userid=post_dict['userid']
     )
 
 
-def result_list_view(request):
+def get_userid_from_name(session, username):
+    return session.query(User).filter(User.username == username).first().id
+
+
+@view_config(route_name='favorite')
+def favorite_view(request):
     if request.method == 'POST':
         if request.POST['type'] == 'referendum':
             model = post_to_favorite_referendum(request.POST)
         else:
             model = post_to_favorite_candidate(request.POST)
+        model.userid = get_userid_from_name(request.dbsession, request.authenticated_userid)
         request.dbsession.add(model)
+    return HTTPFound('/')
+
+
+@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
+def result_list_view(request):
+    if request.method == "POST":
+        address = build_address(
+            request.POST['street'],
+            request.POST['city'],
+            request.POST['state'],
+            request.POST['zip']
+        )
+        return get_civic_info(address)
     return {}
 
 
@@ -202,3 +215,8 @@ def profile_view(request):
     return {
         'candidates': user.favoritecandidates
     }
+
+
+@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
+def address_entry_view(request):
+    return {}

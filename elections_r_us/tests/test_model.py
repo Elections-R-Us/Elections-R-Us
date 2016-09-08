@@ -67,16 +67,12 @@ def make_test_candidate(userid):
     return FavoriteCandidate(
         userid=userid,
         candidatename='Gary Johnson / Bill Weld',
-        party='Libertarian party',
         office='President/Vice President',
-        website='http://www.johnsonweld.com',
-        email='info@johnsonweld.com',
-        phone='801-303-7922'
     )
 
 
 FAVORITE_CANDIDATE_FIELDS = [
-    'candidatename', 'party', 'office', 'website', 'email', 'phone'
+    'candidatename', 'office',
 ]
 
 

@@ -3,7 +3,7 @@
   {% block body %}
   <div class="panel-group" id="accordion">
     <div class="panel panel-primary">
-        <div class="panel-heading">Candidates</div>
+        <div class="panel-heading indigo">Candidates</div>
   {% if contests %}
       {% for item in contests if not item.type['referendum']%}
         {% if 'candidates' in item %}
@@ -21,7 +21,14 @@
                    <li class="list-type-none">{{ candidates.email }}</li>
                    <li class="list-type-none">{{ candidates.phone }}</li>
                    <hr />
-                   <a class="btn-flat waves-effect waves-teal">Save to Favorites</a>
+                   {% if request.authenticated_userid %}
+                   <form class="" action="/favorite" method="post">
+                     <input type="submit" class="btn btn-info indigo" name="name" value="Add To Favorites">
+                     <input type="hidden" name="candidatename" value="{{ candidates.name }}">
+                     <input type="hidden" name="office" value="{{ item.office }}">
+                     <input type="hidden" name="type" value="general_election">
+                  </form>
+                  {% endif %}
                 </ul>
               </div>
             {% endfor %}
@@ -33,7 +40,7 @@
   </div>
   <div class="panel-group" id="accordion">
     <div class="panel panel-primary">
-        <div class="panel-heading">Referendums</div>
+        <div class="panel-heading indigo">Referendums</div>
     {% if contests %}
       {% for item in contests %}
         {% if 'referendum' in item.type %}
@@ -50,7 +57,16 @@
                   <li class="list-type-none"><h6>Con Statement:</h6>{{ item.referendumConStatement }}</li>
                   <li><h6>Referendum Type:</h6>{{ item.type }}</li>
                   <hr>
-                  <a class="btn-flat waves-effect waves-teal">Save to Favorites</a>
+                  {% if request.authenticated_userid %}
+                  <form class="" action="/favorite" method="post">
+                    {% for response in item.referendumBallotResponses %}
+                    <input type="submit" class="btn btn-info indigo" name="position" value="{{ response }}">
+                    {% endfor %}
+                    <input type="hidden" name="title" value="{{ item.referendumTitle }}">
+                    <input type="hidden" name="brief" value="{{ item.referendumBrief }}">
+                    <input type="hidden" name="type" value="referendum">
+                 </form>
+                 {% endif %}
                 </ul>
               </div>
             </div>
