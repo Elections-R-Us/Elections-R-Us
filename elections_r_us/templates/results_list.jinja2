@@ -51,11 +51,11 @@
             <div id="collapse{{ loop.index }}" class="panel-collapse collapse">
               <div class="panel-body">
                 <ul>
-                  <li><h6>Brief:</h6>{{ item.referendumBrief }}</li>
-                  <li><h6>Text:</h6>{{ item.referendumText }}</li>
-                  <li class="list-type-none"><h6>Pro Statement:</h6>{{ item.referendumProStatement }}</li>
-                  <li class="list-type-none"><h6>Con Statement:</h6>{{ item.referendumConStatement }}</li>
-                  <li><h6>Referendum Type:</h6>{{ item.type }}</li>
+                  <li><h6 class="divider-new">Brief:</h6><p class="text-center list-type-none">{{ item.referendumBrief }}</p></li>
+                  <li><h6 class="divider-new">Text:</h6><p class="text-center list-type-none">{{ item.referendumText }}</p></li>
+                  <li><h6 class="divider-new">Pro Statement:</h6><p class="text-center list-type-none">{{ item.referendumProStatement }}</p></li>
+                  <li><h6 class="divider-new">Con Statement:</h6><p class="text-center list-type-none">{{ item.referendumConStatement }}</p></li>
+                  <li><h6 class="divider-new">Referendum Type:</h6><p class="text-center list-type-none">{{ item.type }}</p></li>
                   <hr>
                   {% if request.authenticated_userid %}
                   <form class="" action="/favorite" method="post">

@@ -69,7 +69,7 @@ def user_exists(session, username):
     return len(query) > 0
 
 
-@view_config(route_name='home', renderer='templates/index.jinja2')
+@view_config(route_name='home', renderer='templates/address_entry.jinja2')
 def home_view(request):
     return {}
 
