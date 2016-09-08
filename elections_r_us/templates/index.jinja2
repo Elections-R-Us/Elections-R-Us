@@ -29,7 +29,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
           <ul class="nav navbar-nav">
             <li class="active">
-              <a href="" class="waves-effect waves-light">
+              <a href="{{ request.route_path('home') }}" class="waves-effect waves-light">
                 Home
                 <span class="sr-only">(current)</span>
               </a>
@@ -42,7 +42,7 @@
                 <li><a href="register">Sign up</a></li>
               {% else %}
                 <li><a href="logout" class="waves-effect waves-light">Logout</a></li>
-                <li><a href="#">User Profile</a></li>
+                <li><a href="user_profile">User Profile</a></li>
               {% endif %}
 
           </ul>

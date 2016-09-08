@@ -69,7 +69,7 @@ def user_exists(session, username):
     return len(query) > 0
 
 
-@view_config(route_name='home', renderer='templates/index.jinja2')
+@view_config(route_name='home', renderer='templates/address_entry.jinja2')
 def home_view(request):
     return {}
 
@@ -191,12 +191,16 @@ def favorite_view(request):
             model = post_to_favorite_referendum(request.POST)
         else:
             model = post_to_favorite_candidate(request.POST)
-        model.userid = get_userid_from_name(request.dbsession, request.authenticated_userid)
+        model.userid = get_userid_from_name(
+            request.dbsession,
+            request.authenticated_userid
+        )
         request.dbsession.add(model)
     return HTTPFound('/')
 
 
-@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
+@view_config(route_name='results_list',
+             renderer='templates/results_list.jinja2')
 def result_list_view(request):
     if request.method == "POST":
         address = build_address(
@@ -217,6 +221,19 @@ def profile_view(request):
     }
 
 
-@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
-def address_entry_view(request):
-    return {}
+@view_config(
+    route_name='user_profile',
+    renderer='templates/user_profile.jinja2',
+    permission='login'
+)
+def user_profile(request):
+    username = request.authenticated_userid
+    query = request.dbsession.query(User)
+    user = query.filter(User.username == username).first()
+    return {
+        'username': user.username,
+        'email': user.email,
+        'address': user.address,
+        'candidates': user.favoritecandidates,
+        'referendums': user.favoritereferendums,
+    }
