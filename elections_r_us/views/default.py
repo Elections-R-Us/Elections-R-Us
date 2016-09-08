@@ -71,6 +71,13 @@ def user_exists(session, username):
 
 @view_config(route_name='home', renderer='templates/address_entry.jinja2')
 def home_view(request):
+    username = request.authenticated_userid
+    if username:
+        query = request.dbsession.query(User)
+        if request.authenticated_userid:
+            return {
+                'address': query.filter(User.username == username).first().address
+            }
     return {}
 
 
@@ -203,12 +210,15 @@ def favorite_view(request):
              renderer='templates/results_list.jinja2')
 def result_list_view(request):
     if request.method == "POST":
-        address = build_address(
-            request.POST['street'],
-            request.POST['city'],
-            request.POST['state'],
-            request.POST['zip']
-        )
+        if 'address' in request.POST:
+            address = request.POST['address']
+        else:
+            address = build_address(
+                request.POST['street'],
+                request.POST['city'],
+                request.POST['state'],
+                request.POST['zip']
+            )
         return get_civic_info(address)
     return {}
 
