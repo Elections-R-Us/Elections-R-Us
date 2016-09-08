@@ -312,13 +312,8 @@ def favorite_candidate_post_results(session_with_user):
     return session, result_list_view(dummy_post_request(
         session, {
             'type': 'general election',
-            'userid': userid,
             'candidatename': 'Gary Johnson / Bill Weld',
-            'party': 'Libertarian party',
             'office': 'President/Vice President',
-            'website': 'http://www.johnsonweld.com',
-            'email': 'info@johnsonweld.com',
-            'phone': '801-303-7922'
         }))
 
 
@@ -343,7 +338,6 @@ def favorite_referendum_post_results(session_with_user):
     return session, result_list_view(dummy_post_request(
         session, {
             'type': 'referendum',
-            'userid': userid,
             'title': 'Initiative Measure No. 1433',
             'brief': 'concerns labor standards',
             'position': 'Yes'
