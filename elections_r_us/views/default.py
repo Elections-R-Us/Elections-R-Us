@@ -184,8 +184,8 @@ def get_userid_from_name(session, username):
     return session.query(User).filter(User.username == username).first().id
 
 
-@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
-def result_list_view(request):
+@view_config(route_name='favorite')
+def favorite_view(request):
     if request.method == 'POST':
         if request.POST['type'] == 'referendum':
             model = post_to_favorite_referendum(request.POST)
@@ -193,7 +193,20 @@ def result_list_view(request):
             model = post_to_favorite_candidate(request.POST)
         model.userid = get_userid_from_name(request.dbsession, request.authenticated_userid)
         request.dbsession.add(model)
-    return test_dict
+    return HTTPFound('/')
+
+
+@view_config(route_name='results_list', renderer='results_list.jinja2')
+def result_list_view(request):
+    if request.method == "POST":
+        address = build_address(
+            request.POST['street'],
+            request.POST['city'],
+            request.POST['state'],
+            request.POST['zip']
+        )
+        return get_civic_info(address)
+    return {}
 
 
 def profile_view(request):
