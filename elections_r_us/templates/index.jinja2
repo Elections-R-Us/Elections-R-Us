@@ -7,9 +7,9 @@
     <title>Elections-R-Us</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/css/mdb.min.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="{{ request.static_path('elections_r_us:static/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ request.static_path('elections_r_us:static/css/mdb.min.css') }}" rel="stylesheet">
+    <link href="{{ request.static_path('elections_r_us:static/css/style.css') }}" rel="stylesheet">
   </head>
   <body>
     <nav class="navbar container red">
@@ -57,27 +57,27 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
-            <h5 class="white-text">Footer Content</h5>
-            <p class="grey-text text-lighten-4">Here you can use rows and columns here to organize your footer content.</p>
+            <h5 class="white-text">Elections-R-Us</h5>
+            <p class="grey-text text-lighten-4">This app allows users to view what candidates and referendums are currently being voted upon.</p>
           </div>
           <div class="col-md-6">
             <h5 class="white-text">Links</h5>
               <ul>
-                <li><a class="grey-text text-lighten-3" href="#!">Home</a></li>
-                <li><a class="grey-text text-lighten-3" href="#!">About Us</a></li>
+                <li><a class="grey-text text-lighten-3" href="{{ request.route_path('home') }}">Home</a></li>
+                <li><a class="grey-text text-lighten-3" href="{{ request.route_path('home') }}">About Us</a></li>
               </ul>
           </div>
         </div>
       </div>
       <div class="footer-copyright text-center rgba-black-light">
         <div class="container-fluid">
-          © 2015 Copyright: <a href="#"> Our Website </a>
+          © 2016 Copyright: <a href="https://github.com/Elections-R-Us/Elections-R-Us">Elections-R-Us</a>
         </div>
       </div>
     </footer>
-    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/js/mdb.min.js"></script>
+    <script type="text/javascript" src="{{ request.static_path('elections_r_us:static/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_path('elections_r_us:static/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_path('elections_r_us:static/js/mdb.min.js') }}"></script>
   </body>
 
 </html>
