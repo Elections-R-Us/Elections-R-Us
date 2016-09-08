@@ -1,12 +1,63 @@
 {% extends "index.jinja2" %}
-{% block body %}
 
-<div class="collection z-depth-2">
-  <a class="collection-item blue"><h4 class="white-text">Federal</h4></a>
-  <a href="#!" class="collection-item">Hills</a>
-  <a href="#!" class="collection-item">Drumpf</a>
-  <a href="#!" class="collection-item">Gary Libz</a>
-  <a href="#!" class="collection-item">Dr. Crackpot</a>
+{% block body %}
+<div class="panel-group" id="accordion">
+  <div class="panel panel-primary">
+      <div class="panel-heading">Candidates</div>
+{% if contests %}
+    {% for item in contests if not item.type['referendum']%}
+      {% if 'candidates' in item %}
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse"  href="#collapse{{ loop.index }}">{{ item.office }}</a></h4>
+          </div>
+          <div id="collapse{{ loop.index }}" class="panel-collapse collapse">
+          {% for candidates in item.candidates %}
+            <div class="panel-body">
+              <ul>
+                 <li><h6>{{ candidates.name }}</h6></li>
+                 <li class="list-type-none">{{ candidates.party }}</li>
+                 <li class="list-type-none">{{ candidates.candidateUrl }}</li>
+                 <li class="list-type-none">{{ candidates.email }}</li>
+                 <li class="list-type-none">{{ candidates.phone }}</li>
+                 <hr />
+                 <a class="btn-flat waves-effect waves-teal">Save to Favorites</a>
+              </ul>
+            </div>
+          {% endfor %}
+        </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+</div>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-primary">
+      <div class="panel-heading">Referendums</div>
+  {% if contests %}
+    {% for item in contests %}
+      {% if 'referendum' in item.type %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><a data-toggle="collapse"  href="#collapse{{ loop.index }}">{{ item.referendumTitle }}</a></h4>
+          </div>
+          <div id="collapse{{ loop.index }}" class="panel-collapse collapse">
+            <div class="panel-body">
+              <ul>
+                <li><h6>Brief:</h6>{{ item.referendumBrief }}</li>
+                <li><h6>Text:</h6>{{ item.referendumText }}</li>
+                <li class="list-type-none"><h6>Pro Statement:</h6>{{ item.referendumProStatement }}</li>
+                <li class="list-type-none"><h6>Con Statement:</h6>{{ item.referendumConStatement }}</li>
+                <li><h6>Referendum Type:</h6>{{ item.type }}</li>
+                <hr>
+                <a class="btn-flat waves-effect waves-teal">Save to Favorites</a>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
 </div>
 
 {% endblock %}
