@@ -1,4 +1,5 @@
 {% extends "index.jinja2" %}
+<<<<<<< HEAD
 
 {% block body %}
 <div class="panel-group" id="accordion">
@@ -59,5 +60,26 @@
     {% endfor %}
   {% endif %}
 </div>
+=======
+{% block body %}
+{% if contests %}
+  {% for item in contests %}
+  {% if 'general election' in item.type %}
+    <div class="collection z-depth-2">
+      <a class="collection-item indigo"><h4 class="white-text">{{ item.office }}</h4></a>
+      {% for name in contests.candidates %}
+      <a href="#!" class="collection-item">{{ name.candidates.name }}</a>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if 'referendum' in item.type %}
+    <div class="collection z-depth-2">
+      <a class="collection-item indigo"><h4 class="white-text">{{ item.referendumTitle }}</h4></a>
+      <a href="#!" class="collection-item"></a>
+    </div>
+  {% endif %}
+  {% endfor %}
+{% endif %}
+>>>>>>> 8f7168794a50e937bdb77c1062b309a09c390685
 
 {% endblock %}
