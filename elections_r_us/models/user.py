@@ -19,6 +19,7 @@ class User(Base):
     address = Column(UnicodeText)
     password = Column(Text)
     favoritecandidates = relationship('FavoriteCandidate')
+    favoritereferendums = relationship('FavoriteReferendum')
 
 
 Index('my_index', User.username, unique=True, mysql_length=255)

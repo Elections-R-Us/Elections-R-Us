@@ -357,3 +357,10 @@ def test_profile_view_favorite_candidates(favorite_candidate_post_results):
     request = testing.DummyRequest()
     request.dbsession, _ = favorite_candidate_post_results
     assert len(profile_view(request)['candidates']) > 0
+
+
+def test_home_view_logged_in_address(session_with_user):
+    from ..views.default import home_view
+    request = testing.DummyRequest()
+    request.dbsession, _, _ = session_with_user
+    assert 'address' in home_view(request)
