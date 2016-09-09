@@ -6,6 +6,9 @@ import transaction
 from pyramid import testing
 from ..security import pwd_context
 from ..views.default import UserInfo, RegistrationInput
+from webtest import TestApp as _TestApp
+from .. import main
+
 
 from ..models import (
     get_engine,
@@ -14,6 +17,13 @@ from ..models import (
     User
 )
 from ..models.meta import Base
+
+
+@pytest.fixture(scope="function")
+def app():
+    my_app = main({})
+    app = _TestApp(my_app)
+    return app
 
 
 @pytest.fixture(scope="session")
@@ -39,6 +49,7 @@ def sqlengine(request):
 
 @pytest.fixture(scope="function")
 def new_session(sqlengine, request):
+    """A new database session."""
     session_factory = get_session_factory(sqlengine)
     session = get_tm_session(session_factory, transaction.manager)
 
@@ -51,6 +62,7 @@ def new_session(sqlengine, request):
 
 @pytest.fixture
 def session_with_user(new_session):
+    """A database session with a user attached to it."""
     username = 'username'
     password = 'password'
     new_session.add(User(

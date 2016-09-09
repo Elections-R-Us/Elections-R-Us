@@ -17,6 +17,9 @@
               <div class="input-field">
                 <input name="password" type="password" class="validate">
                 <label for="password">Password</label>
+                {% if failure and failure == 'login_failure' %}
+                  <strong>Login failed.</strong>
+                {% endif %}
               </div>
               <div class="text-center">
                 <input class="btn btn-info" type="submit" value="Login">
@@ -25,6 +28,7 @@
           </form>
         </div>
       </div>
+
       <div class="modal-footer">
         <div class="options">
           <p>Not a member? <a href="register">Sign Up</a></p>

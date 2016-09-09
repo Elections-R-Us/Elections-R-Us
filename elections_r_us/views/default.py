@@ -64,18 +64,25 @@ def verify_registration(inp):
     return verify_password(inp.password, inp.password_confirm)
 
 
-def user_exists(session, username):
-    query = session.query(User).filter(User.username == username).all()
-    return len(query) > 0
-
-
-@view_config(route_name='home', renderer='templates/index.jinja2')
+@view_config(route_name='home', renderer='templates/address_entry.jinja2')
 def home_view(request):
+    username = request.authenticated_userid
+    if request.authenticated_userid:
+        query = request.dbsession.query(User)
+        address = query.filter(User.username == username).first().address
+        return {'address': address}
+    return {}
+
+
+@view_config(route_name='about_us', renderer='templates/about_us.jinja2')
+def about_view(request):
     return {}
 
 
 @view_config(route_name='login', renderer="templates/login.jinja2")
 def login_view(request):
+    if request.authenticated_userid:
+        return HTTPFound('/')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -109,6 +116,9 @@ def register_view(request):
             zip=request.POST['zip'],
             email=request.POST['email']
         )
+        query = request.dbsession.query(User)
+        if query.filter(User.username == credentials.username).first():
+            return failure_info('username taken')
         try:
             verify_registration(credentials)
         except BadLoginInfo as bad:
@@ -143,7 +153,7 @@ def password_change_view(request):
         except BadLoginInfo as bad:
             return failure_info(bad.info)
         if not check_login(request.dbsession, username, old_password):
-            return failure_info('failed login')
+            return failure_info('login_failure')
         change_password(request.dbsession, username, new_password)
         return {'password_changed': True}
     return {}
@@ -191,21 +201,28 @@ def favorite_view(request):
             model = post_to_favorite_referendum(request.POST)
         else:
             model = post_to_favorite_candidate(request.POST)
-        model.userid = get_userid_from_name(request.dbsession, request.authenticated_userid)
+        model.userid = get_userid_from_name(
+            request.dbsession,
+            request.authenticated_userid
+        )
         request.dbsession.add(model)
-    return HTTPFound('/')
+    return HTTPFound('/user_profile')
 
 
-@view_config(route_name='results_list', renderer='templates/results_list.jinja2')
+@view_config(route_name='results_list',
+             renderer='templates/results_list.jinja2')
 def result_list_view(request):
     if request.method == "POST":
-        address = build_address(
-            request.POST['street'],
-            request.POST['city'],
-            request.POST['state'],
-            request.POST['zip']
-        )
-        return get_civic_info(address)
+        if 'address' in request.POST:
+            address = request.POST['address']
+        else:
+            address = build_address(
+                request.POST['street'],
+                request.POST['city'],
+                request.POST['state'],
+                request.POST['zip']
+            )
+        return get_civic_info(address) or {}
     return {}
 
 
@@ -217,6 +234,19 @@ def profile_view(request):
     }
 
 
-@view_config(route_name='address_entry', renderer='templates/address_entry.jinja2')
-def address_entry_view(request):
-    return {}
+@view_config(
+    route_name='user_profile',
+    renderer='templates/user_profile.jinja2',
+    permission='login'
+)
+def user_profile(request):
+    username = request.authenticated_userid
+    query = request.dbsession.query(User)
+    user = query.filter(User.username == username).first()
+    return {
+        'username': user.username,
+        'email': user.email,
+        'address': user.address,
+        'candidates': user.favoritecandidates,
+        'referendums': user.favoritereferendums,
+    }
