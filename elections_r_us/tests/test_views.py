@@ -88,14 +88,29 @@ def dummy_post_request(new_session, params):
     return dummy
 
 
-def test_login_view_success(session_with_user):
-    """Test login view succeeds redirects."""
+def test_login_view_logged_in(session_with_user):
+    """Test login view redirects while logged in."""
     from ..views.default import login_view
     session, username, password = session_with_user
     login_results = login_view(dummy_post_request(session, {
         'username': username,
         'password': password
     }))
+    assert isinstance(login_results, HTTPFound)
+
+
+def test_login_view_success(unauthenticated_session_with_user):
+    """Test login view redirects on success"""
+    from ..views.default import login_view
+    session, username, password = unauthenticated_session_with_user
+    login_results = login_view(dummy_post_request(session, {
+        'username': username,
+        'password': password
+    }))
+    assert not dummy_post_request(session, {
+        'username': username,
+        'password': password
+    }).authenticated_userid
     assert isinstance(login_results, HTTPFound)
 
 
@@ -388,3 +403,13 @@ def test_login_view_failure(unauthenticated_session):
         'password': 'passwor',
     }))
     assert 'failure' in request
+
+
+def test_home(session_with_user):
+    from ..views.default import home_view
+    assert home_view(testing.DummyRequest()) == {}
+
+
+def test_about(session_with_user):
+    from ..views.default import about_view
+    assert about_view(testing.DummyRequest()) == {}
