@@ -116,6 +116,9 @@ def register_view(request):
             zip=request.POST['zip'],
             email=request.POST['email']
         )
+        query = request.dbsession.query(User)
+        if query.filter(User.username == credentials.username).first():
+            return failure_info('username taken')
         try:
             verify_registration(credentials)
         except BadLoginInfo as bad:

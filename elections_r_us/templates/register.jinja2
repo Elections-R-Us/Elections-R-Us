@@ -11,6 +11,9 @@
           <div class="input-field col-md-12">
             <input id="username" name="username" type="text">
             <label for="username" data-error="" data-success="">Username</label>
+            {% if failure == 'username taken' %}
+              <strong>Username taken.</strong>
+            {% endif %}
             {% if failure == 'bad username' %}
               <strong>Username must contain only alphanumeric characters and underscores.</strong>
             {% endif %}
