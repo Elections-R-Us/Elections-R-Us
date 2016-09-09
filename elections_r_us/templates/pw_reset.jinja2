@@ -1,0 +1,17 @@
+{% extends 'index.jinja2' %}
+{% block body %}
+  <div class="container panel panel-primary">
+    <div class="panel-heading panel-danger">Password Reset</div>
+      <div class="panel-body">
+        <form href="" method="POST" class="col-md-12">
+          <div class="row">
+            <div class="input-field col-md-12">
+              <input id="email" type="email" class="validate">
+              <label for="email" data-error="wrong" data-success="right">Email</label>
+            </div>
+          </div>
+          <a submit="Submit" class="btn btn-primary waves-effect waves-light pull-right">Submit</a>
+        </form>
+      </div>
+  </div>
+{% endblock %}

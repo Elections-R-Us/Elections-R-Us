@@ -1,0 +1,94 @@
+/*********************
+ Modals
+**********************/
+
+// Modal Bottom Sheet Style
+.modal.bottom-sheet {
+    top: auto;
+    bottom: -100%;
+    margin: 0;
+    width: 100%;
+    border-radius: 0;
+    will-change: bottom, opacity;
+    background-color: #fff;
+}
+
+.bottom-sheet .modal-content {
+    box-shadow: none;
+    border-bottom: none;
+}
+
+.bottom-sheet .modal-footer {
+    margin-bottom: 30px;
+    border-top: 0;
+}
+
+.lean-overlay {
+    position: fixed;
+    z-index: 999;
+    top: -100px;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 125%;
+    width: 100%;
+    background: #000;
+    display: none;
+    will-change: opacity;
+}
+
+// Modal Login & Modal Register
+.modal-content {
+    .options {
+        float: right
+    }
+    .modal-footer p {
+        font-size: 20px;
+        margin-top: 13px;
+    }
+    .modal-body .subscription-checkbox {
+        margin-top: 30px;
+        p {
+            font-size: 25px;
+            margin-top: -6px;
+        }
+    }
+    .call p {
+        text-align: center;
+    }
+}
+
+// Modal Cart
+.modal-cart {
+    li p {
+        margin: 5px;
+        font-weight: 400;
+        .label {
+            margin-left: 10px;
+            margin-top: 3px;
+            font-weight: 400;
+            position: absolute;
+        }
+        .quantity {
+            font-size: 16px;
+            margin-right: 7px;
+            font-weight: 300;
+        }
+    }
+    .cartPageLink {
+        margin-left: 10px;
+        a {
+            text-decoration: underline;
+            color: #666;
+        }
+    }
+    .total {
+        float: right;
+        font-weight: 400;
+    }
+}
+
+// Modals normalize 
+.modal .modal-body .cf-phone {
+    margin-left: 7px;
+}

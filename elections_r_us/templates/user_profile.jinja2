@@ -1,0 +1,50 @@
+{% extends 'index.jinja2' %}
+{% block body %}
+
+  <div class="card-panel author-box">
+    <div class="row center-on-small-only">
+      <h5 class="text-center">User Profile</h5>
+      <hr>
+        <div class="col-md-8">
+          <div class="row">
+            <h2>Hello {{ username }}</h2>
+          </div>
+
+          <div class="row">
+            <span>{{ email }}</span>
+          </div>
+
+          <div class="row">
+            <span>{{ address }}</span>
+          </div>
+
+          {% if candidates %}
+            <div class="row">
+              <h3>Favorited candidates:</h3>
+              {% for candidate in candidates %}
+                <div>
+                  {{ candidate.candidatename }} for {{ candidate.office }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% if referendums %}
+            <div class="row">
+              <h3>Favorited referendums:</h3>
+              {% for referendum in referendums %}
+                <div>
+                  {{ referendum.title }}
+                  ({{ referendum.brief }}):
+                  <strong>{{ referendum.position }}</strong>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+            <div class="text-center">
+              <a href="/change_password"><input class="btn btn-info" type="submit" value="Change Password"></a>
+            </div>
+        </div>
+    </div>
+  </div>
+{% endblock %}

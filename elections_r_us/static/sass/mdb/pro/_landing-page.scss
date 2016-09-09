@@ -1,0 +1,47 @@
+/*********************
+ Landing Page components
+**********************/
+
+//Pricing Card
+.pricing-card { 
+    position: relative;
+    background-color: #fff;
+    margin-bottom: 4em;
+    .z-depth-1 {
+        z-index: 2;
+        position: relative;
+    }
+    .card-up {
+        overflow: hidden;
+        height: auto;
+        color: #fff;
+        .price {
+            font-size: 5em;
+        }
+        .price:before {
+            content: "$";
+            font-size: 30px;
+            position: absolute;
+            margin-top: -11px;
+            margin-left: -20px;
+        }
+        .price:after {
+            content: "/mo";
+            font-size: 30px;
+            position: absolute;
+            margin-top: 10px;
+        }
+    } 
+    .card-content {
+        padding: 1.5em;
+        p {
+            font-size: 20px;
+        }
+    }
+}
+
+// Section: Detailed Info
+.features-list li {
+    font-size: 20px;
+    line-height: 40px;
+}

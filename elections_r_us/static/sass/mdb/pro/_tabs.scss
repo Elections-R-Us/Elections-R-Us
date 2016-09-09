@@ -1,0 +1,68 @@
+/*********************
+ Tabs
+**********************/
+
+.nav-tabs {
+    position: relative;
+    height: 48px;
+    background-color: $tabs-bg-color;
+    margin: 0 auto;
+    width: 100%;
+    white-space: nowrap;
+    border: none;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    li {
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 48px;
+        height: 48px;
+        padding: 0;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: .8px;
+    }
+    a {
+        color: $tabs-text-color;
+        display: block;
+        width: 100%;
+        height: 100%;
+        @include transition( color .28s ease);
+        &:hover {
+            color: lighten($tabs-text-color, 20%);
+        }
+    }
+    li>a {
+        &:hover {
+            background-color: transparent;
+            border: none;
+        }
+    }
+    li.active>a {
+        border: none;
+        border-bottom: 2px solid $tabs-underline-color;
+        &:hover {
+            border: none;
+        }
+        &:focus {
+            border: none;
+            border-bottom: 2px solid $tabs-underline-color;
+        }
+    }
+}
+
+.tabs-5 li {
+    width: 20%;
+}
+
+.tabs-4 li {
+    width: 25%;
+}
+
+.tabs-3 li {
+    width: 33.3%;
+}
+
+.tabs-2 li {
+    width: 50%;
+}

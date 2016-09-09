@@ -1,0 +1,55 @@
+main {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+footer {
+  clear: both;
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 13em;
+  overflow-x: hidden;
+}
+
+.card-panel {
+    max-width: 50em;
+}
+
+.input-medium {
+    width: 10em;
+    margin: auto;
+}
+
+div.author-box {
+    margin: auto;
+}
+
+#statedropdown {
+    margin-top: 2em;
+}
+
+.list-type {
+  list-style-type: circle;
+  margin: 1em;
+}
+
+.list-type-none {
+  list-style-type: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+h6 {
+  font-size: 1.25em;
+}
+
+.clear {
+  clear: both;
+}
+
+.img-responsive {
+  border-radius: 100px;
+  padding: .75em;
+}

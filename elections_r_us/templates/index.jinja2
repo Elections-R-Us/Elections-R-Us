@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/img/favicon-16x16.png">
+    <title>Elections-R-Us</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="{{ request.static_path('elections_r_us:static/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ request.static_path('elections_r_us:static/css/mdb.min.css') }}" rel="stylesheet">
+    <link href="{{ request.static_path('elections_r_us:static/css/style.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar container red">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="navbar-brand waves-light">
+            Elections-R-Us
+          </span>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+          <ul class="nav navbar-nav">
+            <li class="active">
+              <a href="{{ request.route_path('home') }}" class="waves-effect waves-light">
+                Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+
+            <li><a href="about_us" class="waves-effect waves-light">About Us</a></li>
+
+              {% if not request.authenticated_userid %}
+                <li><a href="login">Login</a></li>
+                <li><a href="register">Sign up</a></li>
+              {% else %}
+                <li><a href="logout" class="waves-effect waves-light">Logout</a></li>
+                <li><a href="user_profile">User Profile</a></li>
+              {% endif %}
+
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+    <main class="container">
+      {% block body %}
+      {% endblock %}
+    </main>
+    <footer class="page-footer container indigo darken-4 center-on-small-only">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <h5 class="white-text">Elections-R-Us</h5>
+            <p class="grey-text text-lighten-4">This app allows users to view what candidates and referendums are currently being voted upon.</p>
+          </div>
+          <div class="col-md-6">
+            <h5 class="white-text">Links</h5>
+              <ul>
+                <li><a class="grey-text text-lighten-3" href="{{ request.route_path('home') }}">Home</a></li>
+                <li><a class="grey-text text-lighten-3" href="{{ request.route_path('about_us') }}">About Us</a></li>
+              </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright text-center rgba-black-light">
+        <div class="container-fluid">
+          © 2016 Copyright: <a href="https://github.com/Elections-R-Us/Elections-R-Us">Elections-R-Us</a>
+        </div>
+      </div>
+    </footer>
+    <script type="text/javascript" src="{{ request.static_path('elections_r_us:static/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_path('elections_r_us:static/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ request.static_path('elections_r_us:static/js/mdb.min.js') }}"></script>
+  </body>
+
+</html>
