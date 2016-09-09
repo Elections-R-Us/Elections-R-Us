@@ -378,3 +378,7 @@ def test_home_view_logged_in_address(session_with_user):
     request = testing.DummyRequest()
     request.dbsession, _, _ = session_with_user
     assert 'address' in home_view(request)
+
+def test_result_list_view_get_request(app):
+    response = app.get('/results_list')
+    assert response.status_code == 200
