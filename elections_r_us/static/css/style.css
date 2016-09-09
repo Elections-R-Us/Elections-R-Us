@@ -38,6 +38,7 @@ div.author-box {
 .list-type-none {
   list-style-type: none;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 h6 {
