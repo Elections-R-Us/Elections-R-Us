@@ -5,6 +5,8 @@ import pytest
 from pyramid.httpexceptions import HTTPFound
 from pyramid import testing
 
+from .conftest import dummy_post_request
+
 
 VALID_LOGINS = [
     ('username', 'password'),
@@ -81,13 +83,6 @@ def test_unmatched_password(p1, p2, valid_registration):
         verify_registration(valid_registration)
 
 
-def dummy_post_request(new_session, params):
-    """Dummy post request creator for tests."""
-    dummy = testing.DummyRequest(post=params)
-    dummy.dbsession = new_session
-    return dummy
-
-
 def test_login_view_logged_in(session_with_user):
     """Test login view redirects while logged in."""
     from ..views.default import login_view
@@ -96,21 +91,6 @@ def test_login_view_logged_in(session_with_user):
         'username': username,
         'password': password
     }))
-    assert isinstance(login_results, HTTPFound)
-
-
-def test_login_view_success(unauthenticated_session_with_user):
-    """Test login view redirects on success"""
-    from ..views.default import login_view
-    session, username, password = unauthenticated_session_with_user
-    login_results = login_view(dummy_post_request(session, {
-        'username': username,
-        'password': password
-    }))
-    assert not dummy_post_request(session, {
-        'username': username,
-        'password': password
-    }).authenticated_userid
     assert isinstance(login_results, HTTPFound)
 
 
@@ -324,19 +304,6 @@ def test_consume_api_success(address):
     assert get_civic_info(address)
 
 
-@pytest.fixture
-def favorite_candidate_post_results(session_with_user):
-    """Test that the API returns information for addresses."""
-    from ..views.default import favorite_view
-    session, username, password = session_with_user
-    return session, favorite_view(dummy_post_request(
-        session, {
-            'type': 'general election',
-            'candidatename': 'Gary Johnson / Bill Weld',
-            'office': 'President/Vice President',
-        }))
-
-
 def test_favorite_candidate_returns_dict(favorite_candidate_post_results):
     """Test that the API returns information for addresses."""
     session, results = favorite_candidate_post_results
@@ -349,20 +316,6 @@ def test_favorite_candidate_view_stores(favorite_candidate_post_results):
     session, results = favorite_candidate_post_results
     query = session.query(FavoriteCandidate)
     assert len(query.all()) == 1
-
-
-@pytest.fixture
-def favorite_referendum_post_results(session_with_user):
-    """Fixture for a user with a favorited referendum"""
-    from ..views.default import favorite_view
-    session, username, password = session_with_user
-    return session, favorite_view(dummy_post_request(
-        session, {
-            'type': 'referendum',
-            'title': 'Initiative Measure No. 1433',
-            'brief': 'concerns labor standards',
-            'position': 'Yes'
-        }))
 
 
 def test_favorite_referendum_redirects(favorite_referendum_post_results):
@@ -388,11 +341,44 @@ def test_profile_view_favorite_candidates(favorite_candidate_post_results):
 
 
 def test_home_view_logged_in_address(session_with_user):
-    """Test that profile view gives candidates."""
+    """Test that home view while logged in gives address."""
     from ..views.default import home_view
     request = testing.DummyRequest()
     request.dbsession, _, _ = session_with_user
     assert 'address' in home_view(request)
+
+
+def test_about(session_with_user):
+    from ..views.default import about_view
+    assert about_view(testing.DummyRequest()) == {}
+
+
+def test_user_profile_has_username(session_with_user):
+    from ..views.default import user_profile
+    request = testing.DummyRequest()
+    request.dbsession, username, password = session_with_user
+    assert request.authenticated_userid is not None
+    assert 'username' in user_profile(request)
+
+
+@pytest.mark.parametrize('address', ADDRESSES)
+def test_result_list_view_address(address, new_session):
+    from ..views.default import result_list_view
+    response = result_list_view(dummy_post_request(new_session, {
+        'address': address
+    }))
+    assert isinstance(response, dict)
+
+
+def test_results_list_view_search_form(new_session):
+    from ..views.default import result_list_view
+    response = result_list_view(dummy_post_request(new_session, {
+        'street': '7600 212th St SW',
+        'city': 'Edmonds',
+        'state': 'WA',
+        'zip': '98026',
+    }))
+    assert isinstance(response, dict)
 
 
 def test_login_view_failure(unauthenticated_session):
@@ -405,11 +391,19 @@ def test_login_view_failure(unauthenticated_session):
     assert 'failure' in request
 
 
-def test_home(session_with_user):
+def test_home(unauthenticated_session_with_user):
     from ..views.default import home_view
-    assert home_view(testing.DummyRequest()) == {}
+    request = testing.DummyRequest()
+    request.dbsession, username, password = unauthenticated_session_with_user
+    assert home_view(request) == {}
 
 
-def test_about(session_with_user):
-    from ..views.default import about_view
-    assert about_view(testing.DummyRequest()) == {}
+def test_login_view_success(unauthenticated_session_with_user):
+    """Test login view redirects on success"""
+    from ..views.default import login_view
+    session, username, password = unauthenticated_session_with_user
+    login_results = login_view(dummy_post_request(session, {
+        'username': username,
+        'password': password
+    }))
+    assert isinstance(login_results, HTTPFound)

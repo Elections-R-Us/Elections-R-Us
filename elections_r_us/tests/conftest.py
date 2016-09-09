@@ -127,3 +127,37 @@ def valid_registration():
         state='WA',
         zip='98503'
     )
+
+
+@pytest.fixture
+def favorite_candidate_post_results(session_with_user):
+    """Test that the API returns information for addresses."""
+    from ..views.default import favorite_view
+    session, username, password = session_with_user
+    return session, favorite_view(dummy_post_request(
+        session, {
+            'type': 'general election',
+            'candidatename': 'Gary Johnson / Bill Weld',
+            'office': 'President/Vice President',
+        }))
+
+
+@pytest.fixture
+def favorite_referendum_post_results(session_with_user):
+    """Fixture for a user with a favorited referendum"""
+    from ..views.default import favorite_view
+    session, username, password = session_with_user
+    return session, favorite_view(dummy_post_request(
+        session, {
+            'type': 'referendum',
+            'title': 'Initiative Measure No. 1433',
+            'brief': 'concerns labor standards',
+            'position': 'Yes'
+        }))
+
+
+def dummy_post_request(new_session, params):
+    """Dummy post request creator for tests."""
+    dummy = testing.DummyRequest(post=params)
+    dummy.dbsession = new_session
+    return dummy
