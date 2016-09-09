@@ -50,7 +50,5 @@ h6 {
 
 .img-responsive {
   border-radius: 100px;
-  padding: 1em;
-  max-height: 200px;
-  max-width: 200px;
+  padding: .75em;
 }
