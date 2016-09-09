@@ -59,7 +59,7 @@ def unauthenticated_sqlengine(request):
 
 def make_new_session(sql, request):
     """A new database session."""
-    session_factory = get_session_factory(sqlengine)
+    session_factory = get_session_factory(sql)
     session = get_tm_session(session_factory, transaction.manager)
 
     def teardown():
@@ -76,9 +76,9 @@ def new_session(sqlengine, request):
 
 
 @pytest.fixture(scope="function")
-def unauthenticated_session(sqlengine, request):
+def unauthenticated_session(unauthenticated_sqlengine, request):
     """An unauthenticated new database session."""
-    return make_new_session(sqlengine, request)
+    return make_new_session(unauthenticated_sqlengine, request)
 
 
 @pytest.fixture
