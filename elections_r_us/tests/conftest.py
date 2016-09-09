@@ -26,14 +26,14 @@ def app():
     return app
 
 
-@pytest.fixture(scope="session")
-def sqlengine(request):
+def make_sqlengine(request, authenticated):
     """Creates a SQL engine specifically for testing (which is destroyed afterwards)."""
     config = testing.setUp(settings={
         'sqlalchemy.url': os.environ["DATABASE_URL"]
     })
     config.include("..models")
-    config.testing_securitypolicy(userid='username')
+    if authenticated:
+        config.testing_securitypolicy(userid='username')
     settings = config.get_settings()
     engine = get_engine(settings)
     Base.metadata.create_all(engine)
@@ -47,8 +47,17 @@ def sqlengine(request):
     return engine
 
 
-@pytest.fixture(scope="function")
-def new_session(sqlengine, request):
+@pytest.fixture(scope="session")
+def sqlengine(request):
+    return make_sqlengine(request, True)
+
+
+@pytest.fixture(scope="session")
+def unauthenticated_sqlengine(request):
+    return make_sqlengine(request, False)
+
+
+def make_new_session(sql, request):
     """A new database session."""
     session_factory = get_session_factory(sqlengine)
     session = get_tm_session(session_factory, transaction.manager)
@@ -58,6 +67,18 @@ def new_session(sqlengine, request):
 
     request.addfinalizer(teardown)
     return session
+
+
+@pytest.fixture(scope="function")
+def new_session(sqlengine, request):
+    """A new database session."""
+    return make_new_session(sqlengine, request)
+
+
+@pytest.fixture(scope="function")
+def unauthenticated_session(sqlengine, request):
+    """An unauthenticated new database session."""
+    return make_new_session(sqlengine, request)
 
 
 @pytest.fixture

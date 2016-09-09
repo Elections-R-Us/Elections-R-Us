@@ -378,3 +378,10 @@ def test_home_view_logged_in_address(session_with_user):
     request = testing.DummyRequest()
     request.dbsession, _, _ = session_with_user
     assert 'address' in home_view(request)
+
+
+# def test_login_view_http_found(unauthenticated_session):
+#     """Test logging in."""
+#     from ..views.default import login_view
+#     request = testing.DummyRequest()
+#     request.dbsession = unauthenticated_sqlengine
