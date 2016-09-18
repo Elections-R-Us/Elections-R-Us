@@ -1,0 +1,39 @@
+{% extends 'index.jinja2' %}
+
+{% block body %}
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4><i class="fa fa-user"></i> Login</h4>
+      </div>
+      <div class="modal-body" style="padding:40px 50px;">
+        <div class="row">
+          <form class="col-md-12" action="#" method="POST">
+            <div class="row">
+              <div class="input-field">
+                <input type="text" name="username" class="validate">
+                <label for="username">Username</label>
+              </div>
+              <div class="input-field">
+                <input name="password" type="password" class="validate">
+                <label for="password">Password</label>
+                {% if failure and failure == 'login_failure' %}
+                  <strong>Login failed.</strong>
+                {% endif %}
+              </div>
+              <div class="text-center">
+                <input class="btn btn-info" type="submit" value="Login">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="options">
+          <p>Not a member? <a href="register">Sign Up</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
